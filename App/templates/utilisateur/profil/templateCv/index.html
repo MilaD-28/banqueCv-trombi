@@ -1,0 +1,109 @@
+{% extends 'utilisateur/profil/base.html' %}
+{% load static %}
+{% block contente %}
+
+<style>
+   .card {
+  position: relative;
+  cursor: pointer; /* Indique que l'élément est cliquable */
+  transition: all 0.3s ease; /* Transition fluide pour les effets */
+  border: 2px solid transparent; /* Bordure transparente par défaut */
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(40, 227, 56, 0.904);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1; /* S'assure que la couche est au-dessus de l'image */
+}
+
+.card:hover::after {
+  opacity: 1; /* Affiche la couche noire au survol */
+}
+
+.card.selected {
+    background-color: rgba(40, 227, 56, 0.904);
+}
+
+.card img {
+  position: relative;
+  z-index: 2; /* Assure que l'image reste au-dessus de la couche noire */
+}
+
+
+</style>
+
+<div class="head-title">
+    <div class="left">
+        <h1>Choix du modele de CV</h1>
+    </div>
+    <a id="suivant" href="{% url 'ajouter-cv' numero=0 %}" class="btn-download" style="cursor: pointer;">
+        <span class="text">Suivant</span>
+        <i class='bx bx-arrow-from-left'></i>
+    </a>
+</div>
+<div class="row mt-5" >
+    {% for model in models %}
+    <div class="col-md-4 d-flex justify-content-center align-items-center">
+      <div class="card selectable w-100 rounded-3 border-0 d-flex justify-content-center align-items-center p-3">
+        <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+          <img src="{{ model.photo.url }}" width="100%" alt="">
+        </div>
+        <span>{{ model.numero }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <script>
+    var numero = null
+  document.addEventListener("DOMContentLoaded", function () {
+  const cards = document.querySelectorAll(".card.selectable");
+
+  cards.forEach((card) => {
+    card.addEventListener("click", function () {
+      // Supprime la classe 'selected' des autres cartes
+      cards.forEach((c) => c.classList.remove("selected"));
+
+      // Ajoute la classe 'selected' à la carte cliquée
+      card.classList.add("selected");
+
+      // Récupère le texte du <span> à l'intérieur de la carte cliquée
+        let btn = document.querySelector("#suivant");
+      const span = card.querySelector("span");
+      numero = span ? span.textContent.trim() : null;
+
+      if (numero) {
+        // Construit l'URL dynamiquement
+        const url = `/user/ajouter-cv/${numero}`;
+        btn.setAttribute('href', url);
+      } else {
+        // Si aucun numéro n'est trouvé, désactive le lien
+        btn.removeAttribute('href');
+      }
+    });
+  });
+});
+
+function envoyerCv() {
+    const url = `/user/ajouter-cv/${numero}`; // Construction de l'URL avec le numéro
+
+    fetch(url, {
+        method: 'get', // Méthode POST
+        headers: {
+            'Content-Type': 'application/json', // Type de contenu
+        },
+    })
+}
+
+
+  </script>
+  
+
+{% endblock %}

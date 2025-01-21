@@ -1,0 +1,83 @@
+{% extends "cv/base.html" %}
+
+{% block title %} Description Profile {% endblock%}
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h2><b style="font-size: 2em;"><span class="text-primary">Langues parlées</span> </b></h2>
+    </div>
+    <div class="container" style="display: flex; justify-content: center;">
+        <form action="{% url 'langue'  %}" method="post">
+            {% csrf_token %}
+            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 850px;">
+                <div id="container">
+                    <div class="row">
+                        <div class="form-group col-sm-8">
+                            <label class="text-primary">Langue</label>
+                            <input name="langue[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div><label for="customRange" class="form-label text-primary">Niveau / 5 </label></div>
+                                <div><p><span id="valeurAffichee">0</span> / 5 </p></div>
+                            </div>
+                            <input type="range" name="niveau[]" onchange="afficher()" style="margin-top: 10px;"  class="form-range" min="0" max="5" id="customRange">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: end;"><button onclick="ajouter()" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <script>
+                    function afficher(id=''){
+                        const valeur = document.getElementById("customRange"+id).value; // reccuperer la valeur du selecteur
+                        document.getElementById("valeurAffichee"+id).innerText = valeur;
+                    }
+
+                    function ajouter() {
+                        // Créer un nouveau bloc de champs de formulaire
+                        const newFields = document.createElement('div');
+                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+                        let container = document.getElementById('container')
+                        let nombreElements = container.children.length;
+                        
+                        // Ajout de la structure HTML pour les nouveaux champs
+                        newFields.innerHTML = `
+                            <div class="row">
+                                <div class="form-group col-sm-8">
+                                    <label class="text-primary">Langue</label>
+                                    <input name="langue[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div><label for="customRange2" class="form-label text-primary">Niveau / 5 </label></div>
+                                        <div><p><span id="valeurAffichee${nombreElements+1}">0</span> / 5 </p></div>
+                                    </div>
+                                    <input type="range" onchange="afficher(${nombreElements+1})" name="niveau[]" style="margin-top: 10px;"  class="form-range" min="0" max="5" id="customRange${nombreElements+1}">
+                                </div>
+                            </div>
+                            
+                            <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
+                        `;
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        document.getElementById('container').appendChild(newFields);
+                    }
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
+                <button style="width: 200px;" class="btn btn-primary">Suivant</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,247 @@
+{% extends 'cv/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    section{
+        margin: 2em 15em;
+    }
+    .profile-card{
+        max-width: 400px;
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px;
+        position: relative;
+    }
+
+    .profile-card::before{
+        content: "";
+        position: absolute;
+        height: 36%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 24px 24px 0 0;
+        background-color: #4070F4;
+    }
+
+    .profile-card .text-data{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .text-data .name{
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .text-data .job{
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .profile-card .media-buttons{
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .media-buttons .link{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+        height: 34px;
+        width: 34px;
+        border-radius: 50%;
+        text-decoration: none;
+        background-color: #4070F4;
+        margin: 0 8px;
+    }
+
+    .image{
+        position: relative;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        background-color: #4070F4;
+        padding: 4px;
+        margin-bottom: 10px; 
+    }
+
+    .image .profile-img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #FFF;
+    }
+
+    .profile-card .buttons{
+        display: flex;
+        align-items: center;
+        margin-top: 25px;
+    }
+    .buttons .button{
+        border: none;
+        font-size: 14px;
+        font-weight: 400;
+        border-radius: 24px;
+        margin: 0 10px;
+        padding: 8px 24px;
+        background-color: #4070F4;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .buttons .button:hover{
+        background-color: #0e4bf1;
+    }
+
+    .profile-card .analytics{
+        display: flex;
+        align-items: center;
+        margin-top: 25px;
+    }
+
+    .analytics .data{
+        display: flex;
+        align-items: center;
+        color: #333;
+        padding: 0 20px;
+        border-right: 2px solid #e7e7e7;
+    }
+    .data i{
+        font-size: 18px;
+        margin-right: 6px;
+    }
+
+    .data:last-child{
+        border-right: none;
+    }
+
+
+
+</style>
+
+<section>
+
+    {% if data %}
+    <div class="row">
+        {% for d in data %}
+        <div class="col-sm-4">
+            <div class="profile-card">
+                <div class="image">
+                    {% if d.photo %}
+                        <img src="{{d.photo.url}}" alt="" class="profile-img">
+                    {% else %}
+                        <img src="{% static 'assets/img/default-avatar.png' %}" alt="" class="profile-img">
+                    {% endif %}
+                </div>
+
+                <div class="text-data">
+                    <span class="name">CodingLab</span>
+                    <span class="job">YouTuber & Blogger</span>
+                </div>
+
+                <div class="media-buttons">
+                    <a href="#" class="link" style="background-color: #4267b2;">
+                        <i class='bx bxl-facebook' ></i>
+                    </a>
+                    <a href="#" class="link" style="background-color: #1da1f2;">
+                        <i class='bx bxl-twitter' ></i>
+                    </a>
+                    <a href="#" class="link" style="background-color: #e1306c;">
+                        <i class='bx bxl-instagram' ></i>
+                    </a>
+                    <a href="#" class="link" style="background-color: #ff0000;">
+                        <i class='bx bxl-youtube' ></i>
+                    </a>
+                </div>
+
+                <div class="buttons">
+                    <button class="button">Subscribe</button>
+                    <button class="button">Message</button>
+                </div>
+
+                <div class="analytics">
+                    <div class="data">
+                        <i class='bx bxs-heart'></i>
+                        <span class="number">60k</span>
+                    </div>
+                    <div class="data">
+                        <i class='bx bx-message-rounded' ></i>
+                        <span class="number">20k</span>
+                    </div>
+                    <div class="data">
+                        <i class='bx bx-share' ></i>
+                        <span class="number">60k</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example" style="box-shadow: none;">
+        <ul class="pagination justify-content-end">
+          <!-- Previous Button -->
+          {% if data.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ data.previous_page_number }}" aria-label="Previous">
+                Précédent
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" aria-label="Previous">
+                Précédent
+              </a>
+            </li>
+          {% endif %}
+      
+          <!-- Page Numbers -->
+          {% for page_num in data.paginator.page_range %}
+            {% if page_num == data.number %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">{{ page_num }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+      
+          <!-- Next Button -->
+          {% if data.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ data.next_page_number }}" aria-label="Next">
+                Suivant
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" aria-label="Next">
+                Suivant
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+    </nav>
+      
+    {% else %}
+        <div>NO bady</div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

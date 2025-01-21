@@ -1,0 +1,221 @@
+
+{% load static %}
+    <style>
+
+        .picture-container {
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            }
+        .picture {
+            width: 106px;
+            height: 106px;
+            background-color: #999999;
+            border: 4px solid #CCCCCC;
+            color: #FFFFFF;
+            border-radius: 50%;
+            margin: 5px auto;
+            overflow: hidden;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+        }
+        .picture:hover {
+            border-color: #2ca8ff;
+        }
+        .picture input[type="file"] {
+            cursor: pointer;
+            display: block;
+            height: 100%;
+            left: 0;
+            opacity: 0 !important;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+        .picture-src {
+            width: 100%;
+        }
+
+    </style>
+
+    <div class="container" id="description" style="display: flex; justify-content: center;">
+        <form id="cvForm">
+            {% csrf_token %}
+            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 700px;">
+
+                <div class="picture-container">
+                    <div class="picture">
+                        <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
+                        <input type="file" name="photo" id="wizard-picture">
+                    </div>
+                    <h6>Ajouter Photo</h6>
+                </div>
+                
+                <div class="form-group">
+                    <label class="text-primary">Poste actuel ou souhaité</label>
+                    <input name="titre" id="titre" required type="text" class="form-control" placeholder="Votre profession">
+                </div>
+                <div class="form-group">
+                    <label class="text-primary">Profil</label>
+                    <textarea class="form-control" required name="description" id="description" cols="30" rows="8"></textarea>
+                </div>
+                
+            </div>
+            <div style="display: flex; justify-content: end; margin-top: 5px;"><button style="width: 200px;" class="btn btn-primary">Suivant</button></div>
+        </form>
+    </div>
+
+    <!-- form formation -->
+    <div class="container" id="formation" style="display: flex; justify-content: center;">
+        <form id="formationForm">
+            {% csrf_token %}
+            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 700px;">
+                <div id="container">
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <label class="text-primary">Periode</label>
+                            <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                        </div>
+                        <div class="form-group col-sm-9">
+                            <label class="text-primary">Formation</label>
+                            <input name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="text-primary">Université</label>
+                        <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: end;"><button onclick="ajouter()" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <script>
+
+                    function ajouter() {
+                        // Créer un nouveau bloc de champs de formulaire
+                        const newFields = document.createElement('div');
+                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+
+                        // Ajout de la structure HTML pour les nouveaux champs
+                        newFields.innerHTML = `
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    <label class="text-primary">Periode</label>
+                                    <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                                </div>
+                                <div class="form-group col-sm-9">
+                                    <label class="text-primary">Formation</label>
+                                    <input name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-primary">Université</label>
+                                <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
+                            </div>
+                            <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
+                        `;
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        document.getElementById('container').appendChild(newFields);
+                    }
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
+                <button style="width: 200px;" class="btn btn-primary">Suivant</button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#cvForm').on('submit', function(event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                // Récupération des données du formulaire
+                const formData = {
+                    photo:$('#wizard-picture').val(),
+                    titre: $('#titre').val(),
+                    description: $('#description').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+
+                // Envoi des données avec AJAX
+                $.ajax({
+                    url: "{% url 'description' personne_id=user.id %}", // Mettre à jour avec la bonne URL
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        // Message de succès
+                        $('#message').html('<p style="color:green;">' + response.message + '</p>');
+
+                        // Vider les champs du formulaire
+                        $('#cvForm')[0].reset();
+
+                        // Redirection vers la page 'formation'
+                        window.location.href = "{% url 'formation' %}";
+                    },
+                    error: function(xhr) {
+                        // Message d'erreur
+                        $('#message').html('<p style="color:red;">Une erreur s\'est produite.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#cvForm').on('submit', function(event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                // Récupération des données du formulaire
+                const formData = {
+                    periode:$('#periode').val(),
+                    formation: $('#formation').val(),
+                    etablissement: $('#etablissement').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+
+                // Envoi des données avec AJAX
+                $.ajax({
+                    url: "{% url 'description' personne_id=user.id %}", // Mettre à jour avec la bonne URL
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        // Message de succès
+                        $('#message').html('<p style="color:green;">' + response.message + '</p>');
+
+                        // Vider les champs du formulaire
+                        $('#cvForm')[0].reset();
+
+                        // Redirection vers la page 'formation'
+                        window.location.href = "{% url 'formation' %}";
+                    },
+                    error: function(xhr) {
+                        // Message d'erreur
+                        $('#message').html('<p style="color:red;">Une erreur s\'est produite.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+
+

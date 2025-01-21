@@ -1,0 +1,129 @@
+{% extends 'utilisateur/profil/base.html' %}
+{% load static %}
+{% block contente %}
+
+
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="#">Home</a>
+                </li>
+            </ul>
+        </div>
+        <a href="{% url 'format-cv' %}" class="btn-download">
+            <i class='bx bx-plus'></i>
+            <span class="text">Nouveau CV</span>
+        </a>
+    </div>
+
+    <ul class="box-info">
+        <li>
+            <i class='bx bxs-calendar-check' ></i>
+            <span class="text">
+                <h3>{{ user_cv|length }}</h3>
+                <p>Total CV</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+                <h3>2834</h3>
+                <p>Visitors</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-dollar-circle' ></i>
+            <span class="text">
+                <h3>{{nbIncomplet}}</h3>
+                <p>Total CV Incomplet</p>
+            </span>
+        </li>
+    </ul>
+
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Recent Orders</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Date Order</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for cv in user_cv %}
+                    <tr>
+                        <td>
+                            {% if cv.photo %}
+                                <img src="{{cv.photo.url}}">
+                            {% else %}
+                                <img src="{% static 'assets/img/defaut-avatar.png' %}">
+                            {% endif %}
+                        </td>
+
+                        {% if cv.poste %}
+                            <td>{{ cv.poste}}</td>
+                        {% else %}
+                            <td><strong>Cv par defaut</strong></td>
+                        {% endif %}
+
+                        {% if cv.terminer %}
+                            <td><span class="status completed">Complet</span></td>
+                            
+                        {% else %}
+                            <td><span class="status process">imcomplet</span></td>
+                            <td><button class="btn btn-outline-warning">
+                                <a href="{% url 'ajouter-cv' numero=cv.modele.id%}" class="text-warning"><i class='bx bx-edit-alt'></i></a>
+                            </button></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="todo">
+            <div class="head">
+                <h3>Todos</h3>
+                <i class='bx bx-plus' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <ul class="todo-list">
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                <li class="not-completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                <li class="completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                <li class="not-completed">
+                    <p>Todo List</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

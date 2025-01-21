@@ -1,0 +1,27 @@
+{% extends 'utilisateur/profil/base.html' %}
+{% load static %}
+{% block contente %}
+
+<div class="head-title">
+    <a id="suivant" href="{% url 'format-cv' %}" class="btn-download" style="cursor: pointer;">
+        <i class='bx bxs-left-arrow-alt'></i>
+        <span class="text">Retour</span>
+    </a>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-sm-7 card p-3 border-0 pt-5" style="background-color: #F9F9F9;">
+            <div class="text-center pb-4">
+                <h1>NOUVEAU CV {{ numero }}</h1>
+            </div>
+            {% include template_path %}
+        </div>
+        <div class="col-sm-5">
+            {% include "cv/description.html" %}
+        </div>
+    </div>
+</div>
+  
+
+{% endblock %}

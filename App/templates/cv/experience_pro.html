@@ -1,0 +1,104 @@
+{% extends "cv/base.html" %}
+
+{% block title %} Description Profile {% endblock%}
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h2><b style="font-size: 2em;"><span class="text-primary">Experiences Professionnelles</span> </b></h2>
+    </div>
+    <div class="container" style="display: flex; justify-content: center;">
+        <form action="{% url 'experience_pro'  %}" method="post">
+            {% csrf_token %}
+            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 850px;">
+                <div id="container">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label class="text-primary">Periode</label>
+                            <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <label for="customRange" class="form-label text-primary">Poste occupé</label>
+                            <input type="text" name="entreprise[]"  class="form-control" placeholder="Ex: Developpeur Web">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label class="text-primary">Entreprise</label>
+                            <input name="periode[]" type="text" class="form-control" placeholder="Nom de l'entreprise">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="customRange" class="form-label text-primary">Localité</label>
+                            <input type="text" name="entreprise[]"  class="form-control" placeholder="Abidjan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="customRange" class="form-label text-primary">Description</label>
+                        <textarea name="" id="" rows="6" class="form-control" placeholder="Les taches effectuées"></textarea>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: end;"><button onclick="ajouter()" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <script>
+                    function afficher(id=''){
+                        const valeur = document.getElementById("customRange"+id).value; // reccuperer la valeur du selecteur
+                        document.getElementById("valeurAffichee"+id).innerText = valeur;
+                    }
+
+                    function ajouter() {
+                        // Créer un nouveau bloc de champs de formulaire
+                        const newFields = document.createElement('div');
+                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+                        let container = document.getElementById('container')
+                        let nombreElements = container.children.length;
+                        // Ajout de la structure HTML pour les nouveaux champs
+                        newFields.innerHTML = `
+                            <div class="row">
+                                <div class="form-group col-sm-4">
+                                    <label class="text-primary">Periode</label>
+                                    <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                                </div>
+                                <div class="form-group col-sm-8">
+                                    <label for="customRange" class="form-label text-primary">Poste occupé</label>
+                                    <input type="text" name="poste[]"  class="form-control" placeholder="Ex: Developpeur Web">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label class="text-primary">Entreprise</label>
+                                    <input name="entreprise[]" type="text" class="form-control" placeholder="Nom de l'entreprise">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="customRange" class="form-label text-primary">Localité</label>
+                                    <input type="text" name="localite[]"  class="form-control" placeholder="Ex: Abidjan">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="customRange" class="form-label text-primary">Description</label>
+                                <textarea name="description[]" id="" rows="6" class="form-control" placeholder="Les taches effectuées"></textarea>
+                            </div>
+                            
+                            <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
+                        `;
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        document.getElementById('container').appendChild(newFields);
+                    }
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
+                <button style="width: 200px;" class="btn btn-primary">Suivant</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

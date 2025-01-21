@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'cv/personne.css' %}" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    
+    <title>{% block title %}Trombinoscope | index{% endblock %}</title>
+
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+}
+body{
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif';
+}
+nav{
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+    ul{
+        width: 100%;
+        list-style: none;
+        display: flex;
+    }
+
+    li{
+        height: 50px;
+    }
+    li:first-child{
+        margin-right: auto;
+    }
+
+    a{
+        height: 100%;
+        padding: 0 30px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        color: black;
+    }
+    a:hover{
+        background-color: #f0f0f0;
+    }
+
+}
+
+
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    li{
+        width: 100%;
+    }
+    a{
+        width: 100%;
+    }
+}
+.menu-button{
+    display: none;
+}
+
+@media(max-width: 800px){
+    .hideOnMible{
+        display: none;
+    }
+    .menu-button{
+        display: block;
+    }
+}
+
+@media(max-width: 400px){
+    .sidebar{
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    <nav class="navBar">
+        <ul class="sidebar">
+            <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></a></li>
+            <li><a href="">Accueil</a></li>
+            <li><a href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
+            <li><a href="{% url 'connexion' %}">Se connecter</a></li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            <li class="">
+                
+                <button type="button" class="btn btn-outline-primary" style="margin-left: 3em; height: 60px;">
+                    {% if user.photo %}
+                        <img src="{{ user.photo.url }}" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                    {% else %}
+                        <img src="{% static 'assets/img/default-avatar.png' %}" alt="" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                    {% endif %}
+                        <span>{{ user.email }}</span>
+                </button>
+            </li>
+            {% endif %}
+
+            
+            {% if user.is_authenticated %}
+                <li class="hideOnMible">
+                    <a href="{% url 'deconnexion' %}" class="text-danger">
+                        <i class='bx bxs-log-out-circle' ></i>
+                        <span class="text">Deconnecter</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="hideOnMible"><a href=""></a></li>
+                <li class="hideOnMible"><a href="">Accueil</a></li>
+                <li class="hideOnMible"><a href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
+                <li class="hideOnMible"><a href="{% url 'connexion' %}">Se connecter</a></li>
+            {% endif %}
+            <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script>
+        function showSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+
+        function hideSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+    </script>
+
+    <script src="{% static 'assets/js/jquery-2.2.4.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
+    
+	<script src="{% static 'assets/js/gsdk-bootstrap-wizard.js' %}" type="text/javascript"></script>
+    
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+</body>
+</html>
