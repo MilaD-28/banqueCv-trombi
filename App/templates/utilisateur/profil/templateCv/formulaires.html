@@ -38,31 +38,38 @@
 
     </style>
 
-    <div class="container" id="description" style="display: flex; justify-content: center; width: 100%;">
-        <form id="cvForm">
-            {% csrf_token %}
-            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em;">
+    <div id="description" class="card">
+        <div class="card-header">
+            Description
+          </div>
+        <div class="card-body">
+            <form id="cvForm">
+                {% csrf_token %}
+                <div class="" style="padding: 20px;">
 
-                <div class="picture-container">
-                    <div class="picture">
-                        <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
-                        <input type="file" name="photo" id="wizard-picture">
+                    <div class="picture-container">
+                        <div class="picture">
+                            <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
+                            <input type="file" name="photo" id="wizard-picture">
+                        </div>
+                        <h6>Ajouter Photo</h6>
                     </div>
-                    <h6>Ajouter Photo</h6>
+                    
+                    <div class="form-group">
+                        <label class="text-primary">Poste actuel ou souhaité</label>
+                        <input name="titre" id="titre" required type="text" class="form-control rounded-0" placeholder="Votre profession">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-primary">Profil</label>
+                        <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="8"></textarea>
+                    </div>
+                    
                 </div>
-                
-                <div class="form-group">
-                    <label class="text-primary">Poste actuel ou souhaité</label>
-                    <input name="titre" id="titre" required type="text" class="form-control rounded-0" placeholder="Votre profession">
+                <div style="display: flex; justify-content: end; margin-top: 5px;">
+                    <button style="width: 200px;" class="btn btn-primary" id="submitDescription">Suivant</button>
                 </div>
-                <div class="form-group">
-                    <label class="text-primary">Profil</label>
-                    <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="8"></textarea>
-                </div>
-                
-            </div>
-            <div style="display: flex; justify-content: end; margin-top: 5px;"><button style="width: 200px;" class="btn btn-primary">Suivant</button></div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <!-- form formation -->
@@ -80,77 +87,34 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#cvForm').on('submit', function(event) {
-                event.preventDefault(); // Empêche le rechargement de la page
-
-                // Récupération des données du formulaire
-                const formData = {
-                    photo:$('#wizard-picture').val(),
-                    titre: $('#titre').val(),
-                    description: $('#description').val(),
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                };
-
-                // Envoi des données avec AJAX
+        $(document).ready(function () {
+            $("#submitDescription").click(function (e) {
+                e.preventDefault(); // Empêche le rechargement de la page
+                
+                // Récupérer les données du formulaire
+                let formData = $("#cvForm").serialize();
+    
+                // Effectuer une requête AJAX
                 $.ajax({
-                    url: "{% url 'description' personne_id=user.id %}", // Mettre à jour avec la bonne URL
+                    url: "{% url 'formation_form' %}", // Remplacez par l'URL de votre vue Django
                     type: "POST",
                     data: formData,
-                    success: function(response) {
-                        // Message de succès
-                        $('#message').html('<p style="color:green;">' + response.message + '</p>');
-
-                        // Vider les champs du formulaire
-                        $('#cvForm')[0].reset();
-
-                        // Redirection vers la page 'formation'
-                        window.location.href = "{% url 'formation' %}";
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message); // Message de succès
+                            
+                            // Afficher le formulaire suivant ou effectuer une autre action
+                            $("#formation").hide(); // Masquer le formulaire actuel
+                            // Ici, vous pouvez afficher un autre formulaire
+                        } else {
+                            alert(response.message); // Message d'erreur
+                        }
                     },
-                    error: function(xhr) {
-                        // Message d'erreur
-                        $('#message').html('<p style="color:red;">Une erreur s\'est produite.</p>');
+                    error: function () {
+                        alert("Une erreur est survenue lors de l'envoi du formulaire.");
                     }
                 });
             });
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#cvForm').on('submit', function(event) {
-                event.preventDefault(); // Empêche le rechargement de la page
-
-                // Récupération des données du formulaire
-                const formData = {
-                    periode:$('#periode').val(),
-                    formation: $('#formation').val(),
-                    etablissement: $('#etablissement').val(),
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                };
-
-                // Envoi des données avec AJAX
-                $.ajax({
-                    url: "{% url 'description' personne_id=user.id %}", // Mettre à jour avec la bonne URL
-                    type: "POST",
-                    data: formData,
-                    success: function(response) {
-                        // Message de succès
-                        $('#message').html('<p style="color:green;">' + response.message + '</p>');
-
-                        // Vider les champs du formulaire
-                        $('#cvForm')[0].reset();
-
-                        // Redirection vers la page 'formation'
-                        window.location.href = "{% url 'formation' %}";
-                    },
-                    error: function(xhr) {
-                        // Message d'erreur
-                        $('#message').html('<p style="color:red;">Une erreur s\'est produite.</p>');
-                    }
-                });
-            });
-        });
-    </script>
-
-
+    

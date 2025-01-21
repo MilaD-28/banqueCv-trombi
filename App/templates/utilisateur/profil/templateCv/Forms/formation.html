@@ -1,69 +1,72 @@
-<div class="container" id="formation" style="display: block;">
-    <form id="formationForm">
-        {% csrf_token %}
-        <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 700px;">
-            <div id="container">
-                <div class="row">
-                    <div class="form-group col-sm-3">
-                        <label class="text-primary">Periode</label>
-                        <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+<div id="formation" class="card" style="display: none;" >
+    <div class="card-header">FORMATION</div>
+    <div class="card-body">
+        <form id="formationForm">
+            {% csrf_token %}
+            <div class="" style="padding: 20px;">
+                <div id="container">
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <label class="text-primary">Periode</label>
+                            <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                        </div>
+                        <div class="form-group col-12 mt-2 mb-2">
+                            <label class="text-primary">Formation</label>
+                            <input  name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
+                        </div>
                     </div>
-                    <div class="form-group col-sm-9">
-                        <label class="text-primary">Formation</label>
-                        <input  name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
+                    
+                    <div class="form-group">
+                        <label class="text-primary">Université</label>
+                        <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label class="text-primary">Université</label>
-                    <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
-                </div>
+                <div style="display: flex; justify-content: end;"><button onclick="ajouter()" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <script>
+
+                    function ajouter() {
+                        // Créer un nouveau bloc de champs de formulaire
+                        const newFields = document.createElement('div');
+                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+
+                        // Ajout de la structure HTML pour les nouveaux champs
+                        newFields.innerHTML = `
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label class="text-primary">Periode</label>
+                                    <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
+                                </div>
+                                <div class="form-group col-12 mt-2 mb-2">
+                                    <label class="text-primary">Formation</label>
+                                    <input name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-primary">Université</label>
+                                <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
+                            </div>
+                            <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
+                        `;
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        document.getElementById('container').appendChild(newFields);
+                    }
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
             </div>
-            <div style="display: flex; justify-content: end;"><button onclick="ajouter()" type="button"><i class="fa-solid fa-plus"></i></button></div>
-            <script>
-
-                function ajouter() {
-                    // Créer un nouveau bloc de champs de formulaire
-                    const newFields = document.createElement('div');
-                    newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
-
-                    // Ajout de la structure HTML pour les nouveaux champs
-                    newFields.innerHTML = `
-                        <div class="row">
-                            <div class="form-group col-sm-3">
-                                <label class="text-primary">Periode</label>
-                                <input name="periode[]" type="text" class="form-control" placeholder="Ex: 2012-2013">
-                            </div>
-                            <div class="form-group col-sm-9">
-                                <label class="text-primary">Formation</label>
-                                <input name="formation[]" type="text" class="form-control" placeholder="Ex: Licence en Information">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="text-primary">Université</label>
-                            <input name="etablissement[]" type="text" class="form-control" placeholder="Université ou In">
-                        </div>
-                        <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
-                    `;
-
-                    // Ajouter le nouveau bloc de champs au conteneur
-                    document.getElementById('container').appendChild(newFields);
-                }
-
-                // Fonction pour supprimer un groupe de champs
-                function supprimer(button) {
-                    // Trouver le parent div contenant les champs et le bouton
-                    const parentDiv = button.parentElement;
-
-                    // Supprimer ce div
-                    parentDiv.remove();
-                }
-
-            </script>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-            <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
-            <button style="width: 200px;" class="btn btn-primary" id="submitFormation">Suivant</button>
-        </div>
-    </form>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
+                <button style="width: 200px;" class="btn btn-primary" id="submitFormation">Suivant</button>
+            </div>
+        </form>
+    </div>
 </div>
