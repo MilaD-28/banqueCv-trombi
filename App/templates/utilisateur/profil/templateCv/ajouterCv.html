@@ -1,6 +1,7 @@
-{% extends 'utilisateur/profil/base.html' %}
+{% extends "cv/base.html" %}
 {% load static %}
-{% block contente %}
+{% block title %} User | Ajouter cv {% endblock%}
+{% block content %}
 
 <div class="head-title">
     <a id="suivant" href="{% url 'format-cv' %}" class="btn-download" style="cursor: pointer;">
@@ -18,7 +19,7 @@
             {% include template_path %}
         </div>
         <div class="col-sm-5">
-            {% include "cv/description.html" %}
+            {% include "utilisateur/profil/templateCv/formulaires.html" %}
         </div>
     </div>
 </div>

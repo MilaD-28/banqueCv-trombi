@@ -80,6 +80,9 @@ nav{
         width: 100%;
     }
 }
+.lien{
+    color: #4070F4;
+}
 .menu-button{
     display: none;
 }
@@ -126,26 +129,53 @@ nav{
             
             {% if user.is_authenticated %}
                 <li class="hideOnMible">
+                    <a class="lien" href="{% url 'deconnexion' %}">
+                        <span class="text">Accueil</span>
+                    </a>                  
+                </li>
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'deconnexion' %}">
+                        <span class="text">Trombinoscope</span>
+                    </a>
+                </li>
+                
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'deconnexion' %}">
+                        <span class="text">Mes CV</span>
+                    </a>
+                </li>
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'format-cv' %}">
+                        <span class="text">Ajouter CV</span>
+                    </a>
+                </li>
+
+                <li class="hideOnMible">
                     <a href="{% url 'deconnexion' %}" class="text-danger">
                         <i class='bx bxs-log-out-circle' ></i>
                         <span class="text">Deconnecter</span>
-                    </a>
+                    </a> 
                 </li>
             {% else %}
                 <li class="hideOnMible"><a href=""></a></li>
-                <li class="hideOnMible"><a href="">Accueil</a></li>
-                <li class="hideOnMible"><a href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
-                <li class="hideOnMible"><a href="{% url 'connexion' %}">Se connecter</a></li>
+                <li class="hideOnMible"><a class="lien" href="">Accueil</a></li>
+                <li class="hideOnMible"><a class="lien" href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
+                <li class="hideOnMible"><a class="lien" href="{% url 'connexion' %}">Se connecter</a></li>
             {% endif %}
             <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
         </ul>
     </nav>
 
-    <div id="content">
+    <div id="content" class="container-fluid">
         {% block content %}
         {% endblock %}
     </div>
 
+    <footer style="height: 60px; display: flex; align-items: center; justify-content: center;">
+        <div class="text-center">
+            Trombinoscope | copiright 2025 
+        </div>
+    </footer>
     <script>
         function showSidebar(){
             const sidebar = document.querySelector('.sidebar')
