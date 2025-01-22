@@ -1,0 +1,83 @@
+<div id="competence" class="card rounded-0 shadow" style="display: none;">
+    <div class="card-header"><h3>EXPERIENCE PROFESSIONNELLE</h3></div>
+    <div class="card-body">
+        <form id="competenceForm" method="post">
+            {% csrf_token %}
+            <div class="" style="padding: 10px;">
+                <div id="containerCompetence">
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="text-primary">Compétence</label>
+                            <input name="competence[]" type="text" class="form-control rounded-0" required placeholder="">
+                        </div>
+                        <div class="form-group col-sm-12 mt-3">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div><label for="customRange" class="form-label text-primary">Niveau / 5 </label></div>
+                                <div><p><span id="valeurAffichee">0</span> / 5 </p></div>
+                            </div>
+                            <input type="range" name="niveau[]" value="0" onchange="afficher()" style="margin-top: 0px;"  class="form-range" min="0" max="5" id="customRange">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: end;"><button id="plusComp" type="button" class="btn"><i class="fa-solid fa-plus"></i></button></div>
+
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    function afficher(id=''){
+                        const valeur = document.getElementById("customRange"+id).value; // reccuperer la valeur du selecteur
+                        document.getElementById("valeurAffichee"+id).innerText = valeur;
+                    }
+
+                    $(document).ready(function () {
+                        $("#plusComp").click(function (e) {
+                        e.preventDefault()
+                        // Récupérer le conteneur et le nombre d'éléments
+                        let $container = $("#containerCompetence");
+                        let nombreElements = $container.children().length;
+
+                        // Créer un nouveau bloc de champs avec la structure HTML
+                        let newFields = $(`
+                            <div class="form-group-wrapper">
+                                <div class="row">
+                                    <div class="form-group col-sm-12">
+                                        <label class="text-primary">Compétence</label>
+                                        <input name="competence[]" type="text" class="form-control rounded-0">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div><label for="customRange${nombreElements + 1}" class="form-label text-primary">Niveau / 5 </label></div>
+                                            <div><p><span id="valeurAffichee${nombreElements + 1}">0</span> / 5 </p></div>
+                                        </div>
+                                        <input type="range" value="0" onchange="afficher(${nombreElements + 1})" name="niveau[]" style="margin-top: 10px;" class="form-range" min="0" max="5" id="customRange${nombreElements + 1}">
+                                    </div>
+                                </div>
+                                <button style="margin-bottom: 15px;" type="button" onclick="supprimer(this)">Supprimer</button>
+                            </div>
+                        `);
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        $container.append(newFields);
+
+                        });
+                    });
+
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                <!-- <button style="width: 100px;" class="btn">retour</button> -->
+                <button style="width: 100px;" class="btn btn-primary" type="button" id="submitCompetence">Suivant</button>
+            </div>
+        </form>
+    </div>
+</div>

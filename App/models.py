@@ -87,7 +87,7 @@ class ExperienceProfessionnelle(models.Model):
 
 class Langue(models.Model):
     cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    language = models.CharField(max_length=100)
+    langue = models.CharField(max_length=100)
     niveau = models.CharField(max_length=50)
 
 class Competence(models.Model):

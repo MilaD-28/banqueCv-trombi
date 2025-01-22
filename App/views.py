@@ -104,140 +104,129 @@ def ajouterPersonne(request):
 #             redirect("ajouterPersonne")
 #         return render(request, 'cv/description.html')
 
-def description(request, personne_id):
+@login_required
+def description(request):
     if request.method == "POST":
         photo = request.POST.get('photo')
         titre = request.POST.get('titre')
         description = request.POST.get('description')
-        personne = get_object_or_404(Personne, id=personne_id)
 
-        cv = Cv.objects.create(
-            poste=titre,
-            description=description,
-            photo=photo,
-            personne=personne
-        )
+        # cv = Cv.objects.create(
+        #     poste=titre,
+        #     description=description,
+        #     photo=photo,
+        #     personne=request.user
+        # )
 
         # Garder l'id du cv en session 
-        request.session["cv_id"] = cv.id
+        # request.session["cv_id"] = cv.id
 
-        return JsonResponse({"message": "CV enregistré avec succès", "cv_id": cv.id}, status=200)
+        return JsonResponse({"success": True, "message": "CV enregistré avec succès"}, status=200)
 
     
 
 def formation(request):
     # Reccuperer l'id du cv gardé en session
-    cv = request.session.get("cv_id")
-    user_id = request.session.get("user")
-
     if request.method == "POST":
-        etablissement = request.POST.getlist('etablissement')
-        diplome = request.POST.getlist('diplome')
-        periode = request.POST.getlist('periode')
+        # Récupérer les données envoyées
+        periodes = request.POST.getlist("periode[]")
+        formations = request.POST.getlist("formation[]")
+        etablissements = request.POST.getlist("etablissement[]")
+        cv_id = request.session.get("cv_id")
 
-        cv = get_object_or_404(Cv, id=cv)
-        # enregistrer le ou les formation(s)
-        for i in range(len(diplome)):
-            Formation.objects.create(
-                etablissement=etablissement[i],
-                diplome=diplome[i],
-                periode=periode[i],
-                cv=cv
-            )
-        return redirect('competence')
-    else:
-        if not user_id:
-            return redirect('ajouterPersonne')
+        cv = 1 #Cv.objects.get(id=cv_id)
         if not cv:
-            return redirect('description', personnde_id=user_id)
-        return render(request, 'cv/formation.html')
+            return JsonResponse({"success": False, "message": "CV introuvable."})
+
+        # # Sauvegarder les données dans la base
+        # for periode, formation, etablissement in zip(periodes, formations, etablissements):
+        #     Formation.objects.create(
+        #         cv=cv,
+        #         etablissement=etablissement,
+        #         diplome=formation,
+        #         periode=periode
+        #     )
+        
+        return JsonResponse({"success": True, "message": "Les formations ont été enregistrées avec succès."})
+
+    return JsonResponse({"success": False, "message": "Requête non valide."})
     
 
 def experienceProfessionnelle(request):
-    # Reccuperer l'id du cv gardé en session
-    cv = request.session.get("cv_id")
-    user_id = request.session.get("user")
 
     if request.method == "POST":
-        periode = request.POST.getlist('periode')
-        poste = request.POST.getlist('poste')
-        entreprise = request.POST.getlist('entreprise')
-        localite = request.POST.getlist('localite')
-        description = request.POST.getlist('description')
-        
-        cv = get_object_or_404(Cv, id=cv)
+        periodes = request.POST.getlist('periode')
+        postes = request.POST.getlist('poste')
+        entreprises = request.POST.getlist('entreprise')
+        localites = request.POST.getlist('localite')
+        descriptions = request.POST.getlist('description')
+        cv_id = request.session.get("cv_id")
 
-        # enregistrer le ou les formation(s)
-        for i in range(len(periode)):
-            ExperienceProfessionnelle.objects.create(
-                job_titre=poste[i],
-                entreprise=entreprise[i],
-                localite=localite[i],
-                periode=periode[i],
-                description=description[i],
-                cv=cv
-            )
-        return redirect('langue')
-    else:
-        if not user_id:
-            return redirect('ajouterPersonne')
+        cv = 1 #Cv.objects.get(id=cv_id)
         if not cv:
-            return redirect('description', personnde_id=user_id)
+            return JsonResponse({"success": False, "message": "CV introuvable."})
+
+        # # Sauvegarder les données dans la base
+        # for periode, poste, entreprise, localite, description in zip(periodes, postes, entreprises, localites, descriptions):
+        #     Formation.objects.create(
+        #         cv=cv,
+        #         job_titre=poste,
+        #         periode=periode,
+        #         entreprise=entreprise,
+        #         localite=localite,
+        #         description=description,
+        #     )
         
-        return render(request, 'cv/experience_pro.html')
+        return JsonResponse({"success": True, "message": "Enregistrement reussit!"})
+
+    return JsonResponse({"success": False, "message": "Requête non valide."})
     
 
-def competence(request):
-    # Reccuperer l'id du cv gardé en session
-    cv = request.session.get("cv_id")
-    user_id = request.session.get("user")
-    
+def competence(request): 
     if request.method == "POST":
-        competence = request.POST.getlist('competence')
-        niveau = request.POST.getlist('niveau')
+        competences = request.POST.getlist('competence')
+        niveaux = request.POST.getlist('niveau')
+        cv_id = request.session.get("cv_id")
 
-        cv = get_object_or_404(Cv, id=cv)
-        # enregistrer le ou les formation(s)
-        for i in range(len(niveau)):
-            Competence.objects.create(
-                competence=competence[i],
-                niveau=niveau[i],
-                cv=cv
-            )
-        return redirect('experience_pro')
-    else:
-        if not user_id:
-            return redirect('ajouterPersonne')
+        cv = 1 #Cv.objects.get(id=cv_id)
         if not cv:
-            return redirect('description', personnde_id=user_id)
-        return render(request, 'cv/competence.html')
+            return JsonResponse({"success": False, "message": "CV introuvable."})
+
+        # # Sauvegarder les données dans la base
+        # for competence, niveau in zip(competences, niveaux):
+        #     Formation.objects.create(
+        #         cv=cv,
+        #         competence=competence,
+        #         niveau=niveau,
+        #     )
+        
+        return JsonResponse({"success": True, "message": "Enregistrement reussit!"})
+
+    return JsonResponse({"success": False, "message": "Requête non valide."})
+        
     
 
 def langue(request):
-    # Reccuperer l'id du cv gardé en session
-    cv = request.session.get("cv_id")
-    user_id = request.session.get("user")
-
     if request.method == "POST":
-        langue = request.POST.getlist('langue')
-        niveau = request.POST.getlist('niveau')
-        
-        cv = get_object_or_404(Cv, id=cv)
+        langues = request.POST.getlist('langue')
+        niveaux = request.POST.getlist('niveau')
+        cv_id = request.session.get("cv_id")
 
-        # enregistrer le ou les formation(s)
-        for i in range(len(niveau)):
-            Competence.objects.create(
-                langue=langue[i],
-                niveau=niveau[i],
-                cv=cv
-            )
-        return redirect('loisirs')
-    else:
-        if not user_id:
-            return redirect('ajouterPersonne')
+        cv = 1 #Cv.objects.get(id=cv_id)
         if not cv:
-            return redirect('description', personnde_id=user_id)
-        return render(request, 'cv/langue.html')
+            return JsonResponse({"success": False, "message": "CV introuvable."})
+
+        # # Sauvegarder les données dans la base
+        # for langue, niveau in zip(langues, niveaux):
+        #     Formation.objects.create(
+        #         cv=cv,
+        #         langue=langue,
+        #         niveau=niveau,
+        #     )
+        
+        return JsonResponse({"success": True, "message": "Enregistrement reussit!"})
+
+    return JsonResponse({"success": False, "message": "Requête non valide."})
     
 
 def loisirs(request):
@@ -245,25 +234,22 @@ def loisirs(request):
     user_id = request.session.get("user")
     if request.method == "POST":
         loisirs = request.POST.getlist('loisirs')
+        cv_id = request.session.get("cv_id")
 
-        cv = get_object_or_404(Cv, id=cv)
-        # enregistrer le ou les formation(s)
-        for i in range(len(loisirs)):
-            Loisir.objects.create(
-                loisirs=loisirs[i],
-                cv=cv
-        )
-        del request.session['cv_id']
-        del request.session['user']
-        request.session["slug"] = True
-        return redirect('connexion')
-    
-    else:
-        if not user_id:
-            return redirect('ajouterPersonne')
+        cv = 1 #Cv.objects.get(id=cv_id)
         if not cv:
-            return redirect('description', personnde_id=user_id)
-        return render(request, 'cv/loisirs.html')
+            return JsonResponse({"success": False, "message": "CV introuvable."})
+
+        # # Sauvegarder les données dans la base
+        # for loisir in zip(loisirs):
+        #     Formation.objects.create(
+        #         cv=cv,
+        #         loisirs=loisir,
+        #     )
+        
+        return JsonResponse({"success": True, "message": "Enregistrement reussit!"})
+
+    return JsonResponse({"success": False, "message": "Requête non valide."})
     
 # gerer la connexion de l'utilisateur
 def connexion(request):

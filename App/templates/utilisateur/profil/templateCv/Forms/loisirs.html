@@ -1,0 +1,58 @@
+<div id="loisirs" class="card rounded-0 shadow" style="display: none;">
+    <div class="card-header text-center"><h3>LOISIRS</h3></div>
+    <div class="card-body">
+        <form id="loisirsForm" method="post">
+            {% csrf_token %}
+            <div class="" style="padding: 10px;">
+                <div id="container">
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="text-primary">Loisir</label>
+                            <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: end; "><button onclick="ajouter()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <script>
+
+                    function ajouter() {
+                        // Créer un nouveau bloc de champs de formulaire
+                        const newFields = document.createElement('div');
+                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+                        let container = document.getElementById('container')
+                        let nombreElements = container.children.length;
+                        
+                        // Ajout de la structure HTML pour les nouveaux champs
+                        newFields.innerHTML = `
+                            <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <label class="text-primary">Loisirs</label>
+                                    <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
+                                </div>
+                            </div>
+                            
+                            <button style="margin-bottom: 15px; font-size: 1em;" type="button" class="btn" onclick="supprimer(this)">x</button>
+                        `;
+
+                        // Ajouter le nouveau bloc de champs au conteneur
+                        document.getElementById('container').appendChild(newFields);
+                    }
+
+                    // Fonction pour supprimer un groupe de champs
+                    function supprimer(button) {
+                        // Trouver le parent div contenant les champs et le bouton
+                        const parentDiv = button.parentElement;
+
+                        // Supprimer ce div
+                        parentDiv.remove();
+                    }
+
+                </script>
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-top: 25px;">
+                <button style="width: 100px;" class="btn btn-success">Terminer</button>
+            </div>
+        </form>
+    </div>
+</div>
