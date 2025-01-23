@@ -224,38 +224,40 @@
     <div class="container">
         <div class="left-side">
             <div class="profileTexte">
-                <div class="imgBx">
-                    <img src="{{user.photo.url}}">
+                <div class="imgBx" >
+                    <img src="" id="photo">
                 </div>
-                <h2>{{user.prenom}} {{user.nom|upper}}<br><span>Developpeuse Web/Mobile</span></h2>
+                <h2 id="nom">{{user.prenom}} {{user.nom|upper}}<br><span id="titre">{{cv.poste}}</span></h2>
             </div>
             <div class="contactInfo">
                 <h3 class="title">Mes contacts</h3>
                 <ul>
                     <li>
                         <span class="icon"><i class="bi bi-telephone-fill"></i></span>
-                        <span class="text">{{user.telephone}}</span>
+                        <span class="text" id="telephone">{{user.telephone}}</span>
                     </li>
                     <li>
                         <span class="icon"><i class="bi bi-envelope-fill"></i></span>
-                        <span class="text">{{user.email}}</span>
+                        <span class="text" id="email">{{user.email}}</span>
                     </li>
                     <li>
                         <span class="icon"><i class="bi bi-geo-alt-fill"></i></span>
-                        <span class="text">{{user.adresse}}</span>
+                        <span class="text" id="adresse">{{user.adresse}}</span>
                     </li>
                 </ul>
             </div>
             <div class="contactInfo education">
                 <h3 class="title">Formations</h3>
+                {% for formation in formations %}
                 <ul>
-                    <li>
+                    <li style="position: relative;">
                         <h5>2013 - 2016</h5>
                         <h4>Master en Data science</h4>
                         <h4>Nom Universite</h4>
+                        <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                     </li>
-                    
                 </ul>
+                {% endfor %}
             </div>
             <div class="contactInfo language">
                 <h3 class="title">Langues</h3>
@@ -273,51 +275,94 @@
         <div class="right-side">
             <div class="about">
                 <h2 class="title2">Profile</h2>
-                <p>Lorem ipsum dolor sit amet consectetur 
-                    adipisicing elit. Corrupti, voluptatibus 
-                    consectetur voluptates et facere sint aspernatur 
-                    nulla tempore, distinctio accusantium nemo impedit. 
-                    In natus maxime, corrupti eum assumenda architecto 
-                    dolores?In natus maxime, corrupti eum assumenda architecto 
-                    dolores?
+                <p id="description">
+                    {{cv.description}}
                 </p>
 
                 <h2 class="title2">Experiences</h2>
-                <div class="box">
+                {% for experience in experiences %}
+                <div class="box" style="position: relative;">
                     <div class="year_company">
-                        <h5>2022 - Present</h5>
+                        <h5>{{experience.periode}}</h5>
                         <h5>Nom entreprise</h5>
                     </div>
                     <div class="text">
-                        <h4>DevOps Senior</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur 
-                            adipisicing elit. Corrupti, voluptatibus 
-                            consectetur voluptates et facere sint aspernatur 
-                            nulla tempore.</p>
+                        <h4>{{ experience.job_titre }}</h4>
+                        <p>{{ experience.description }}</p>
                     </div>
+                    <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
+                {% endfor %}
 
             </div>
             <div class="about skills">
                 <h2 class="title2">Competences</h2>
-                <div class="box">
-                    <h4>Html, Css & JavaScript</h4>
+                {% for competence in competences %}
+                <div class="box" style="position: relative;">
+                    <h4>{{competence.competence}}</h4>
+                    {% if competence.niveau%}
                     <div class="percent">
                         <div style="width: 98%;"></div>
                     </div>
+                    {% endif %}
+                    <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
-                <div class="box">
-                    <h4>Aws, MicroSoft Azure</h4>
-                    <div class="percent">
-                        <div style="width: 88%;"></div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <div class="about interest">
                 <h2 class="title2">Centre d'interet</h2>
+                
                 <ul>
-                    <li><i class="fa fa-trophy" aria-hidden="true"></i>Jeux videos</li>
+                    {% for l in loisirs %}
+                        <li style="position: relative;">
+                            {{l.loisirs}}
+                            <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                        </li>
+                        
+                    {% endfor %}
                 </ul>
+                
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            var stop = false
+            // Reccuperer la description eregistrer puis afficher dans le formulaire
+            function fetchData() {
+                $.ajax({
+                    url: "{% url 'getDescription' %}", // Remplacez par l'URL de votre backend
+                    type: "GET", // Méthode GET (ou POST si nécessaire)
+                    success: function (response) {
+                        // Mettre à jour le contenu avec les données reçues
+                        // $("#photo").attr("src", response.cvData.photo);
+                        $("#description").html(response.cvData.description);
+                        $("#titre").html(response.cvData.poste);
+
+                        stop = true
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.message,
+                                });
+                            },
+                });
+            }
+
+            // Appeler fetchData toutes les secondes
+            let id = setInterval(()=>{
+                if(stop){
+                    clearInterval(id)
+                }
+                if(cvId){
+                    fetchData()
+                }
+            }, 1000); // 1000 ms = 1 seconde
+
+        });
+    </script>

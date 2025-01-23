@@ -114,7 +114,14 @@
                     data: formData,
                     success: function (response) {
                         if (response.success) {
-                            // alert(response.message); // Message de succès
+
+                            Swal.fire({
+                                position: "top",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
                             $("#cvForm")[0].reset(); // Réinitialise tous les champs du formulaire
                             $("#wizardPicturePreview").attr("src", "{% static 'assets/img/default-avatar.png' %}")
 

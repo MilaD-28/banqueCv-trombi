@@ -1,21 +1,21 @@
 <div id="loisirs" class="card rounded-0 shadow" style="display: none;">
     <div class="card-header text-center"><h3>LOISIRS</h3></div>
     <div class="card-body">
-        <form id="loisirsForm" method="post">
+        <form action="{% url 'loisirs' %}" method="post">
             {% csrf_token %}
             <div class="" style="padding: 10px;">
                 <div id="container">
                     <div class="row">
                         <div class="form-group col-sm-12">
                             <label class="text-primary">Loisir</label>
-                            <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
+                            <input name="loisirs[]" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: end; "><button onclick="ajouter()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                <div style="display: flex; justify-content: end; "><button onclick="ajouterLoisir()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
                 <script>
 
-                    function ajouter() {
+                    function ajouterLoisir() {
                         // Créer un nouveau bloc de champs de formulaire
                         const newFields = document.createElement('div');
                         newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="form-group col-sm-12">
                                     <label class="text-primary">Loisirs</label>
-                                    <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
+                                    <input name="loisirs[]" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
                                 </div>
                             </div>
                             
@@ -35,7 +35,7 @@
                         `;
 
                         // Ajouter le nouveau bloc de champs au conteneur
-                        document.getElementById('container').appendChild(newFields);
+                        container.appendChild(newFields);
                     }
 
                     // Fonction pour supprimer un groupe de champs

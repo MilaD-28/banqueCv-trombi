@@ -22,6 +22,8 @@ urlpatterns = [
     path('profil-user/',views.profil, name='profil'),
     path('user/format-cv',views.selectTemplate, name='format-cv'),
     path('user/ajouter-cv/<int:numero>',views.ajouterCv, name='ajouter-cv'),
+    path('g-description/',views.getDescription, name='getDescription'),
+    path('get-cv/',views.getCv, name='getCv'),
 
 
 

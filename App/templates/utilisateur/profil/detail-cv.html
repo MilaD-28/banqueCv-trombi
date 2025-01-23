@@ -187,26 +187,26 @@ nav{
         </ul>
     </nav>
 
-    <div id="content" class="container-fluid">
+    
 
-        <div class="head-title" style="padding: 22px 0 0 0;">
-            <a id="suivant" href="{% url 'format-cv' %}" class="btn btn-primary" style="cursor: pointer;">
-                <i class='bx bxs-left-arrow-alt'></i>
-                <span class="text">Retour</span>
-            </a>
+    <div >
+        <div class="d-flex justify-content-end my-3 mx-5">
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-outline-warning">
+                    Modifier <i class='bx bx-edit-alt'></i>
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                    Telecharger
+                    <i class='bx bxs-download'></i>
+                </button>
+                <button type="button" class="btn btn-outline-success">
+                    Envoyer
+                    <i class='bx bx-mail-send' ></i>
+                </button>
+            </div>
         </div>
-        
-        <div>
-            <div class="text-center pb-2" >
-                <h1>NOUVEAU CV {{ numero }}</h1>
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="w-75">
-                    {% include "utilisateur/profil/templateCv/formulaires.html" %}
-                </div>
-                
-                
-            </div>
+        <div >
+            {% include template_path %}
         </div>
 
 
