@@ -23,11 +23,31 @@ urlpatterns = [
     path('user/format-cv',views.selectTemplate, name='format-cv'),
     path('user/ajouter-cv/<int:numero>',views.ajouterCv, name='ajouter-cv'),
     path('g-description/',views.getDescription, name='getDescription'),
-    path('get-cv/',views.getCv, name='getCv'),
+    path('get-cv/<int:cv_id>',views.getCv, name='getCv'),
+    path('mes-cv/',views.mesCv, name='mesCv'),
 
 
 
     path('format/',views.format, name='format'),
+    path('nouveau-cv/<int:id>',views.creerCv, name='cv'),
+
+    path('get-formation/',views.getFormation, name='get-formation'),
+    path('get-competence/',views.getCompetence, name='get-competence'),
+    path('get-langue/',views.getLangue, name='get-langue'),
+    path('get-loisir/',views.getLoisir, name='get-loisir'),
+    path('get-experience/',views.getExperience, name='get-experience'),
+    path('enregistrer-cv/',views.creerCv, name='enregistrer_cv'),
+
+    path('edit-competence/<int:id>',views.editCompetence, name='edit-competence'),
+    path('edit-formation/<int:id>',views.editFormation, name='edit-formation'),
+    path('edit-langue/<int:id>',views.editLangue, name='edit-langue'),
+    path('edit-loisir/<int:id>',views.editLoisir, name='edit-loisir'),
+    path('edit-exp/<int:id>',views.editExp, name='edit-exp'),
+    path('edit-profil/<int:id>',views.editProfil, name='edit-profil'),
+    path('edit-cv/<int:id>',views.editCv, name='edit-cv'),
+
+    path('envoyer-email',views.envoyer_email, name='envoyer_email'),
+
 ]
 
 if settings.DEBUG:  # new

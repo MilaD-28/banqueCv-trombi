@@ -225,7 +225,11 @@
         <div class="left-side">
             <div class="profileTexte">
                 <div class="imgBx" >
-                    <img src="" id="photo">
+                    {% if cv.photo %}
+                        <img src="{{cv.photo.url}}" id="photo">
+                    {% else %}
+                        <img src="{{user.photo.url}}" id="photo">
+                    {% endif %}
                 </div>
                 <h2 id="nom">{{user.prenom}} {{user.nom|upper}}<br><span id="titre">{{cv.poste}}</span></h2>
             </div>
@@ -248,35 +252,37 @@
             </div>
             <div class="contactInfo education">
                 <h3 class="title">Formations</h3>
-                {% for formation in formations %}
+                
                 <ul>
+                    {% for formation in formations %}
                     <li style="position: relative;">
-                        <h5>2013 - 2016</h5>
-                        <h4>Master en Data science</h4>
-                        <h4>Nom Universite</h4>
-                        <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                        <h5>{{formation.periode}}</h5>
+                        <h4>{{formation.diplome}}</h4>
+                        <h4>{{formation.etablissement}}</h4>
+                        <a href="{% url 'edit-formation' id=formation.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                     </li>
+                    {% endfor %}
                 </ul>
-                {% endfor %}
+                
             </div>
             <div class="contactInfo language">
                 <h3 class="title">Langues</h3>
                 <ul>
-                    <li>
-                        <span class="text">Fancais</span>
-                        <span class="percent">
-                            <div style="width: 95%;"></div>
-                        </span>
+                    {% for langue in langues %}
+                    <li style="position: relative;" class="mb-1">
+                        <span class="text">{{langue.langue}}</span>
+                        <a href="{% url 'edit-langue' id=langue.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                     </li>
-                    
+                    {% endfor %}
                 </ul>
             </div>
         </div>
         <div class="right-side">
             <div class="about">
                 <h2 class="title2">Profile</h2>
-                <p id="description">
+                <p id="description" style="position: relative;">
                     {{cv.description}}
+                    <a href="{% url 'edit-profil' id=cv.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </p>
 
                 <h2 class="title2">Experiences</h2>
@@ -284,13 +290,13 @@
                 <div class="box" style="position: relative;">
                     <div class="year_company">
                         <h5>{{experience.periode}}</h5>
-                        <h5>Nom entreprise</h5>
+                        <h5>{{experience.entreprise}}</h5>
                     </div>
                     <div class="text">
                         <h4>{{ experience.job_titre }}</h4>
                         <p>{{ experience.description }}</p>
                     </div>
-                    <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                    <a href="{% url 'edit-exp' id=experience.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
                 {% endfor %}
 
@@ -298,14 +304,9 @@
             <div class="about skills">
                 <h2 class="title2">Competences</h2>
                 {% for competence in competences %}
-                <div class="box" style="position: relative;">
+                <div class="" style="position: relative;">
                     <h4>{{competence.competence}}</h4>
-                    {% if competence.niveau%}
-                    <div class="percent">
-                        <div style="width: 98%;"></div>
-                    </div>
-                    {% endif %}
-                    <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                    <a href="{% url 'edit-competence' id=competence.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
                 {% endfor %}
             </div>
@@ -316,7 +317,7 @@
                     {% for l in loisirs %}
                         <li style="position: relative;">
                             {{l.loisirs}}
-                            <a href="" class="edit"   style="position: absolute; top: 0; right: 0;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                            <a href="{% url 'edit-loisir' id=l.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                         </li>
                         
                     {% endfor %}
@@ -328,41 +329,4 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).ready(function () {
-            var stop = false
-            // Reccuperer la description eregistrer puis afficher dans le formulaire
-            function fetchData() {
-                $.ajax({
-                    url: "{% url 'getDescription' %}", // Remplacez par l'URL de votre backend
-                    type: "GET", // Méthode GET (ou POST si nécessaire)
-                    success: function (response) {
-                        // Mettre à jour le contenu avec les données reçues
-                        // $("#photo").attr("src", response.cvData.photo);
-                        $("#description").html(response.cvData.description);
-                        $("#titre").html(response.cvData.poste);
-
-                        stop = true
-                    },
-                    error: function (response) {
-                        Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: response.message,
-                                });
-                            },
-                });
-            }
-
-            // Appeler fetchData toutes les secondes
-            let id = setInterval(()=>{
-                if(stop){
-                    clearInterval(id)
-                }
-                if(cvId){
-                    fetchData()
-                }
-            }, 1000); // 1000 ms = 1 seconde
-
-        });
-    </script>
+    

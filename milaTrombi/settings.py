@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -126,7 +126,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTHENTICATION_BACKENDS = ['App.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['App.backends.EmailBackend','django.contrib.auth.backends.ModelBackend'
+                           ]
 
 LOGIN_URL = '/connexion/'
 AUTH_USER_MODEL = 'App.Personne'
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'assenaemmanuel4@gmail.com'  # Replace with your email address
+EMAIL_HOST_PASSWORD = 'fteo ntku vpfh tpuu'  # Replace with your email password

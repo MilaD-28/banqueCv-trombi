@@ -54,9 +54,39 @@ class Personne(AbstractUser):
 
     # Utiliser notre propre manager
     objects = PersonneManager()
+
+    
 class ModelCv(models.Model):
     numero = models.CharField(max_length=5)
     photo = models.ImageField(upload_to="cv/")
+
+
+class Formation(models.Model):
+    etablissement = models.CharField(max_length=255)
+    diplome = models.CharField(max_length=255)
+    periode = models.CharField(max_length=4)
+    personne = models.ForeignKey(Personne, on_delete=models.CASCADE)
+
+class Loisir(models.Model):
+    loisirs = models.CharField(max_length=255)
+    personne = models.ForeignKey(Personne, on_delete=models.CASCADE)
+
+class ExperienceProfessionnelle(models.Model):
+    job_titre = models.CharField(max_length=255)
+    entreprise = models.CharField(max_length=255)
+    localite = models.CharField(max_length=255, null=True)
+    periode = models.CharField(max_length=50)
+    description = models.TextField()
+    personne = models.ForeignKey(Personne, on_delete=models.CASCADE)
+
+class Langue(models.Model):
+    langue = models.CharField(max_length=100)
+    personne = models.ForeignKey(Personne, on_delete=models.CASCADE)
+
+
+class Competence(models.Model):
+    competence = models.CharField(max_length=255)
+    personne = models.ForeignKey(Personne, on_delete=models.CASCADE)
 
 
 class Cv(models.Model):
@@ -67,32 +97,10 @@ class Cv(models.Model):
     modele = models.ForeignKey(ModelCv, on_delete=models.CASCADE, default=0)
     terminer = models.BooleanField(default=False)
 
-class Formation(models.Model):
-    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    etablissement = models.CharField(max_length=255)
-    diplome = models.CharField(max_length=255)
-    periode = models.CharField(max_length=4)
-
-class Loisir(models.Model):
-    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    loisirs = models.CharField(max_length=255)
-
-class ExperienceProfessionnelle(models.Model):
-    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    job_titre = models.CharField(max_length=255)
-    entreprise = models.CharField(max_length=255)
-    localite = models.CharField(max_length=255, null=True)
-    periode = models.CharField(max_length=50)
-    description = models.TextField()
-
-class Langue(models.Model):
-    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    langue = models.CharField(max_length=100)
-    niveau = models.CharField(max_length=50)
-
-class Competence(models.Model):
-    cv = models.ForeignKey(Cv, on_delete=models.CASCADE)
-    competence = models.CharField(max_length=255)
-    niveau = models.CharField(max_length=50)
-
+     # Relations ManyToMany pour permettre plusieurs associations
+    formations = models.ManyToManyField(Formation, blank=True)
+    competences = models.ManyToManyField(Competence, blank=True)
+    experiences = models.ManyToManyField(ExperienceProfessionnelle, blank=True)
+    langues = models.ManyToManyField(Langue, blank=True)
+    loisirs = models.ManyToManyField(Loisir, blank=True)
 

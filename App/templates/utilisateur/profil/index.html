@@ -1,44 +1,187 @@
+{% extends "cv/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
-    <link href="{% static 'cv/personne.css' %}" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>{% block title %}Trombinoscope{% endblock %}</title>
 
-    <style>
-        body{
-            background-color: #fff;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        {% include "utils/nav.html" %}
-    </div>
+{% block title %} Description Profile {% endblock%}
 
-    <section>
-        <h1>Bienvenu sur ton espace</h1> 
-        <div>
-            {% if user.is_authenticated %}
-                <p>Bienvenue, {{ user.nom }} {{ user.prenom }} !</p>
-                <p>Email : {{ user.email }}</p>
-                <div><a href="{% url 'deconnexion' %}">deconnexion</a></div>
-            {% endif %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center display-4">Bienvenue, {{ user.nom }} {{ user.prenom }}</h1>
+
+    <div class="d-flex justify-content-end card">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+            <button type="button" class="btn btn-outline-primary" id="formation"><i class='bx bx-add-to-queue'></i> Formation</button>
+            <button type="button" class="btn btn-outline-primary" id="competence"><i class='bx bx-add-to-queue'></i> Competence</button>
+            <button type="button" class="btn btn-outline-primary" id="langue"><i class='bx bx-add-to-queue'></i> Langue</button>
+            <button type="button" class="btn btn-outline-primary" id="loisir"> <i class='bx bx-add-to-queue'></i> Loisir</button>
+            <button type="button" class="btn btn-outline-primary" id="experience"><i class='bx bx-add-to-queue'></i> Experience</button>
         </div>
-        
-    </section>
+    </div>
+    <div class="card mt-4 rounded-0 p-5">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card rounded-0">
+                    <div class="card-header text-dark rounded-0 d-flex justify-content-center">
+                        {% if user.photo %}
+                            <img src="{{ user.photo.url }}" alt="Photo de {{ user.nom }}" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                        {% else %}
+                            <img src="{% static 'assets/img/default-avatar.png' %}" alt="Photo de {{ user.nom }}" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                        {% endif %}
+                    </div>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <p><i class='bx bxs-envelope'> </i> <span>{{ user.email }}</span></p>
+                            <p><i class='bx bxs-phone' ></i> {{ user.telephone }}</p>
+                            <p><i class='bx bx-home' ></i> {{ user.adresse }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-outline-warning"><i class='bx bxs-edit-alt' ></i> Modifier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <!-- Accordion -->
+                <div class="accordion" id="accordionExample">
+                    <!-- FORMATION -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          FORMATION
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          {% for formation in formations %}
+                          <div>
+                            <button class="btn w-100 text-start">{{ formation.periode }} | {{ formation.diplome }}</button>
+                          </div>
+                          {% empty %}
+                          <span class="text-danger">aucune formation ajoutée</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <!-- EXPERIENCE PROFESSIONNELLE -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          EXPERIENCE PROFESSIONNELLE
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          {% for experience in experiences %}
+                          <div>
+                            <button class="btn w-100 text-start">{{ experience.periode }} | {{ experience.job_titre }} </button>
+                          </div>
+                          {% empty %}
+                          <span class="text-danger">aucune expérience ajoutée</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <!-- COMPETENCE -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          COMPETENCE
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          {% for competence in competences %}
+                          <div>
+                            <button class="btn w-100 text-start">{{ competence.competence }}</button>
+                          </div>
+                          {% empty %}
+                          <span class="text-danger">aucune compétence ajoutée</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <!-- LANGUE -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                          LANGUE
+                        </button>
+                      </h2>
+                      <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          {% for langue in langues %}
+                          <div>
+                            <button class="btn w-100 text-start">{{ langue.langue }}</button>
+                          </div>
+                          {% empty %}
+                          <span class="text-danger">aucune langue ajoutée</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <!-- LOISIR -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                          LOISIR
+                        </button>
+                      </h2>
+                      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          {% for loisir in loisirs %}
+                          <div class="d-flex justify-content-between">
+                            <span>{{ loisir.loisirs }}</span>
+                            <div>
+                                <span class=""><a class="border border-warning rounded-2 text-warning" href=""><i class='bx bxs-edit-alt' ></i></a></span>
+                                <span><a href="" class="border border-danger rounded-2 text-danger"><i class='bx bx-trash-alt' ></i></a></span>
+                            </div>
+                          </div>
+                          {% empty %}
+                          <span class="text-danger">aucun loisir ajouté</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Style CSS supplémentaire -->
+                  <style>
+                    .accordion-body button {
+                      margin-bottom: 10px;
+                    }
+                  </style>
+                  
 
-    <script src="{% static 'assets/js/jquery-2.2.4.min.js' %}" type="text/javascript"></script>
-	<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
-	<script src="{% static 'assets/js/gsdk-bootstrap-wizard.js' %}" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+            </div>
+            
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Naviguer vers la page "about"
+            $('#competence').click(function () {
+                window.location.href = "{% url 'competence' %}";
+            });
+            $('#formation').click(function () {
+                window.location.href = "{% url 'formation' %}";
+            });
+            $('#experience').click(function () {
+                window.location.href = "{% url 'experience_pro' %}";
+            });
+            $('#langue').click(function () {
+                window.location.href = "{% url 'langue' %}";
+            });
+            $('#loisir').click(function () {
+                window.location.href = "{% url 'loisirs' %}";
+            });
+        })
+    </script>
     
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-
-</body>
-</html>
+</div>
+{% endblock %}

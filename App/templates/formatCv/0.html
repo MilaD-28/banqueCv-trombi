@@ -1,223 +1,224 @@
 
 <style>
-.container{
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    min-height: 1000px;
-    background: #fff;
-    display: grid;
-    border: 1px solid brown;
-    grid-template-columns: 1fr 2fr;
-    /* box-shadow: 0 35px 55px rgba(0,0,0,0.1); */
-}
-.container .left-side{
-    position: relative;
-    background: brown;
-    padding: 20px;
-}
-.profileTexte{
-    position: relative;
+/* Google Fonts  */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+/* font-family: 'Open Sans', sans-serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* font-family: 'Public Sans', sans-serif; */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+/* font-family: 'Lato', sans-serif; */
+
+
+
+
+.main-section{
+    width: 210mm;
+    height: 297mm;
+    background-color: white;
+    margin: 0 auto;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    border: 1px solid #F4F4F4;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
 }
-.profileTexte .imgBx{
-    position: relative;
-    width: 200px;
-    height: 200px;
+
+.main-section .left-part{
+    width: 40%;
+    height: 100%;
+    background-color: #F4F4F4;
+    padding: 2.8rem;
+}
+
+.left-part .photo-container{
+    margin-bottom: 2.2rem;
+}
+
+.left-part .photo-container img{
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    overflow: hidden;
+    border: 1rem solid white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.profileTexte .imgBx img{
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.profileTexte h2{
-    color: #fff;
-    font-size: 1.5em;
-    margin-top: 20px;
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: 600;
-    line-height: 1.4em;
-}
-.profileTexte h2 span{
-    font-size: 0.8em;
-    font-weight: 300;
-}
-.contactInfo{
-    padding-top: 40px;
-}
+
 .title{
-    color: #fff;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 1.4rem;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
+    padding: 0.6rem;
+    background-color: #444440;
+    color: white;
+    text-align: center;
+    margin: 1.4rem 0;
 }
-.contactInfo ul{
-    position: relative;
+
+.contact-container{
+    margin-bottom: 2.2rem;
 }
-.contactInfo ul li{
-    position: relative;
-    list-style: none;
-    margin: 10px 0;
-    cursor: pointer;
-}
-.contactInfo ul li .icon{
-    display: inline-block;
-    width: 20px;
-    font-size: 18px;
-    color: rgb(255, 161, 161);
-}
-.contactInfo ul li span{
-    color: #fff;
-    font-weight: 300;
-}
-.contactInfo.education li{
-    margin-bottom: 15px;
-}
-.contactInfo.education h5{
-    color: rgb(255, 161, 161);
-    font-weight: 500;
-}
-.contactInfo.education h4:nth-child(2){
-    color: #fff;
-    font-weight: 500;
-}
-.contactInfo.education h4{
-    color: #fff;
-    font-weight: 300;
-}
-.contactInfo.language .percent{
-    position: relative;
-    width: 100%;
-    height: 6px;
-    background: rgb(255, 161, 161);
-    display: block;
-    margin-top: 5px;
-}
-.contactInfo.language .percent div{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: #333;
-}
-.container .right-side{
-    position: relative;
-    background: #fff;
-    padding: 40px;
-}
-.about{
-    margin-bottom: 50px;
-}
-.about:last-child
-{
-    margin-bottom: 0;
-}
-.title2{
-    color: rgb(255, 61, 61);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-p{
-    color: #333;
-}
-.about .box{
+
+.contact-container .contact-list{
     display: flex;
-    flex-direction: row;
-    margin: 20px 0;
+    gap: 1rem;
+    font-family: 'Lato', sans-serif;
+    color: #444440;
+    font-size: 1rem;
 }
-.about .box .year_company{
-    min-width: 150px;
+
+.education-container{
+    margin-bottom: 2.2rem;
+    font-family: 'Lato', sans-serif;
 }
-.about .box .year_company h5{
-    text-transform: uppercase;
-    color: rgb(255, 115, 115);
+
+.education-container .course{
+    margin-bottom: 1rem;
+    color: #414042;
+}
+ 
+.education-container .education-title{
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: .3rem;
+}
+
+.education-container .college-name{
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    
+}
+
+.education-container .education-date{
+    font-size: 0.9rem;
+}
+
+.skills-container .skill{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.6rem;
+    font-family: 'Lato', sans-serif;
+}
+
+.skills-container .skill .right-skill .outer-layer{
+    background-color: #BBBBBB;
+    height:0.4rem;
+    width: 5rem;
+    border-radius: 0.4rem;
+}
+
+.skills-container .skill .right-skill .inner-layer{
+    background-color: #3D3D3D;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.right-part{
+    padding: 2.8rem;
+}
+
+.right-part .banner{
+    font-family: 'Open Sans', sans-serif; 
+    color: #4D4D4F;
+    margin-bottom: 2.2rem;
+}
+
+.right-part .banner .firstname{
+    font-size: 4rem;
+}
+
+.right-part .banner .lastname{
+    font-size: 4rem;
+    font-weight: 400;
+    letter-spacing: 0.5rem;
+    margin-top: -1rem;
+}
+
+.right-part .banner .position{
+    letter-spacing: 0.3rem;
+    margin-top: -0.5rem;
+    font-size: 1.1rem;
+}
+
+.work-container{
+    margin-top: 5rem;
+    font-family: 'Lato', sans-serif;
+}
+
+.work-container .work:not(:last-child){
+    margin-bottom: 1.8rem;
+}
+
+.work-container .work .job-date{
+    display: flex;
+    justify-content: space-between;
+    color: #4D4D4F;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.work-container .work .company-name{
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #4D4D4F;
+
+}
+
+.work-container .work .work-text{
+    color: #737373;
+    font-size: 0.8rem;
+    text-align: justify;
+    line-height: 1rem;
+}
+
+.references-container .references{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-family: 'Lato', sans-serif;
+    color: #4D4D4F;
+}
+
+.references-container .references .name{
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.references-container .references .company-name{
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.references-container .references .phone{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #414042;
+}
+.references-container .references .phone p{
+    margin: 0.4rem 0;
+}
+
+.references-container .references .phone .phone-text{
     font-weight: 600;
 }
-.skills .box{
-    position: relative;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    justify-content: center;
-    align-items: center;
-}
-.skills .box h4{
-    text-transform: uppercase;
-    color: rgb(255, 79, 79);
-    font-weight: 500;
-}
-.skills .box .percent{
-    position:relative;
-    width: 100%;
-    height: 10px;
-    background: rgb(255, 161, 161);
-}
-.skills .box .percent div{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: #333;
-}
-.interest ul{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-}
-.interest ul li{
-    list-style: none;
-    color: #333;
-    font-weight: 500;
-    margin: 10px 0;
-}
-.interest ul li .fa{
-    color: rgb(255, 108, 108);
-    font-size: 18px;
-    width: 20px;
-}
-@media(max-width:1000px)
-{
-    .container{
-        margin: 10px;
-        grid-template-columns: repeat(1,1fr);
-    }
-    .interest ul{
-        grid-template-columns: repeat(2,1fr);
-    }
-}
-@media(max-width:600px)
-{
-    .about .box{
-        flex-direction: column;
-    }
-    .about .box .year_company{
-        margin-bottom: 5px;
-    }
-    .interest ul{
-        grid-template-columns: repeat(1,1fr);
-    }
-    .skills .box{
-        grid-template-columns: repeat(1,1fr);
-    }
+
+.text-left{
+    text-align: left;
 }
     </style>
 
 
-    <section class="main-section" style="margin-top: 5em 0;">
+    <section class="main-section border" style="margin-top: 5em 0;">
         
         <div class="left-part">
             <div class="photo-container">
-                <img src="{{user.photo.url}}" alt="">
+                {% if cv.photo %}
+                        <img src="{{cv.photo.url}}" id="photo">
+                    {% else %}
+                        <img src="{{user.photo.url}}" id="photo">
+                    {% endif %}
             </div>
             <div class="contact-container">
                 <h2 class="title">Contacts</h2>
@@ -251,31 +252,28 @@ p{
 
             <div class="education-container">
                 <h2 class="title">Education</h2>
-                <div class="course">
-                    <h2 class="education-title">Course Studied</h2>
-                    <h5 class="college-name">University/College Details</h5>
-                    <p class="education-date">2006 - 2008</p>
+                {% for formation in formations %}
+                <div class="course" style="position: relative;">
+                    <h2 class="education-title">{{formation.diplome}}</h2>
+                    <h5 class="college-name">{{formation.etablissement}}</h5>
+                    <p class="education-date">{{formation.periode}}</p>
+                    <a href="{% url 'edit-formation' id=formation.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
-                <div class="course">
-                    <h2 class="education-title">Course Studied</h2>
-                    <h5 class="college-name">University/College Details</h5>
-                    <p class="education-date">2006 - 2008</p>
-                </div>
+                
+                {% endfor %}
                 
             </div>
 
             <div class="skills-container">
                 <h2 class="title">compétences</h2>
-                <div class="skill">
+                {% for competence in competences %}
+                <div class="skill" style="position: relative;">
                     <div class="left-skill">
-                        <p>Skill Name 01</p>
+                        <p>{{competence.competence}}</p>
                     </div>
-                    <div class="right-skill">
-                        <div class="outer-layer">
-                            <div class="inner-layer" style="width: 60%;"></div>
-                        </div>
-                    </div>
+                    <a href="{% url 'edit-competence' id=competence.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
+                {% endfor %}
                 
                 
             </div>
@@ -285,71 +283,39 @@ p{
                 <h1 class="firstname">{{user.prenom}}</h1>
                 <h1 class="lastname">{{user.nom|upper}}</h1>
                 <p class="position">Marketing Manager</p>
+
+                <h2 class="title">Profile</h2>
+                <p style="position: relative;">{{cv.description}}
+                    <a href="{% url 'edit-profil' id=cv.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
+                </p>
             </div>
 
             <div class="work-container ">
-                <h2 class="title text-left">work experience</h2>
-                <div class="work">
+                <h2 class="title text-left">Experiences</h2>
+                {% for experience in experiences %}
+                <div class="work" style="position: relative;">
                     <div class="job-date">
-                        <p class="job">Job position here</p>
-                        <p class="date">2019 - 2022</p>
+                        <p class="job">{{ experience.job_titre }}</p>
+                        <p class="date">{{experience.periode}}</p>
                     </div>
-                    <h2 class="company-name">Company Name l Location</h2>
-                    <p class="work-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in
-                        lorem
-                        at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. In elementum
-                        elit at
-                        dui tristique feugiat. Mauris convallis, mi at mattis malesuada, neque nulla volutpat dolor,
-                        hendrerit faucibus eros nibh ut nunc. Proin luctus urna i</p>
+                    <h2 class="company-name">{{experience.entreprise}}</h2>
+                    <p class="work-text">{{ experience.description }}</p>
+                    <a href="{% url 'edit-exp' id=experience.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                 </div>
-
-                <div class="work">
-                    <div class="job-date">
-                        <p class="job">Job position here</p>
-                        <p class="date">2019 - 2022</p>
-                    </div>
-                    <h2 class="company-name">Company Name l Location</h2>
-                    <p class="work-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in
-                        lorem
-                        at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. In elementum
-                        elit at
-                        dui tristique feugiat. Mauris convallis, mi at mattis malesuada, neque nulla volutpat dolor,
-                        hendrerit faucibus eros nibh ut nunc. Proin luctus urna i</p>
-                </div>
+                
+                {% endfor %}
                 
             </div>
 
              <div class="references-container"> 
-                <h2 class="title text-left">References</h2>
+                <h2 class="title text-left">Loisir</h2>
                 <div class="references">
-                    <div class="left-references">
-                        <h4 class="name">Name Surname</h4>
-                        <p class="company-name">Job position, Company Name</p>
-                        <div class="phone">
-                            <div class="phone-text">
-                                <p>Phone:</p>
-                                <p>Email:</p>
-                            </div>
-                            <div class="phone-number">
-                                <p>123-456-7890</p>
-                                <p>hello@reallygreatsite.com</p>
-                            </div>
-                        </div>
+                    {% for l in loisirs %}
+                    <div class="left-references" style="position: relative;">
+                        <h4 class="name">{{l.loisirs}}</h4>
+                        <a href="{% url 'edit-loisir' id=l.id %}" class="edit"   style="position: absolute; top: 0; right: 0; display: none;"><button class="btn btn-warning"><i class='bx bxs-edit-alt'></i></button></a>
                     </div>
-                    <div class="right-references">
-                        <h4 class="name">Name Surname</h4>
-                        <p class="company-name">Job position, Company Name</p>
-                        <div class="phone">
-                            <div class="phone-text">
-                                <p>Phone:</p>
-                                <p>Email:</p>
-                            </div>
-                            <div class="phone-number">
-                                <p>123-456-7890</p>
-                                <p>hello@reallygreatsite.com</p>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div> 
         </div>

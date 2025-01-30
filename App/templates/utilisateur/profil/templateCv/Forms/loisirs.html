@@ -1,5 +1,10 @@
 <div id="loisirs" class="card rounded-0 shadow" style="display: none;">
+    {% if edit %}
+    <div class="card-header rounded-0 text-center bg-primary text-light"><h3>MODIFIER LOISIR</h3></div>
+    {% else %}
+    {% endif %}
     <div class="card-header text-center"><h3>LOISIRS</h3></div>
+
     <div class="card-body">
         <form action="{% url 'loisirs' %}" method="post">
             {% csrf_token %}
@@ -8,11 +13,17 @@
                     <div class="row">
                         <div class="form-group col-sm-12">
                             <label class="text-primary">Loisir</label>
+                            {% if edit %}
+                            <input name="loisirs" value="{{loisir.loisirs}}" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
+                            {% else %}
                             <input name="loisirs[]" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                {% if not edit %}
                 <div style="display: flex; justify-content: end; "><button onclick="ajouterLoisir()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                {% endif %}
                 <script>
 
                     function ajouterLoisir() {
@@ -51,7 +62,11 @@
             </div>
 
             <div style="display: flex; justify-content: center; margin-top: 25px;">
+                {% if  edit %}
+                <button style="width: 200px;" class="btn btn-success" type="submit">Modifier</button>
+                {% else %}
                 <button style="width: 100px;" class="btn btn-success">Terminer</button>
+                {% endif %}
             </div>
         </form>
     </div>

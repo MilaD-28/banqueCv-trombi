@@ -61,8 +61,11 @@
                     </div>
                     <div class="form-group mt-2">
                         <label class="text-primary">Profil</label>
-                        <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="8"></textarea>
+                        <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="5"></textarea>
                     </div>
+
+
+                    nnb
                     
                 </div>
                 <div style="display: flex; justify-content: end; margin-top: 5px;">
@@ -131,7 +134,11 @@
                             $("#formation").show(); // Masquer le formulaire actuel
                             // Ici, vous pouvez afficher un autre formulaire
                         } else {
-                            alert(response.message + "1"); // Message d'erreur
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: 'Echec',
+                            });
                         }
                     },
                     error: function () {

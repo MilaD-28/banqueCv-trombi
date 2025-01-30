@@ -1,0 +1,217 @@
+{% extends "cv/base.html" %}
+{% load static %}
+{% block title %} Description Profile {% endblock%}
+
+{% block content %}
+    <div id="content" style="margin: 0 12em;">
+
+
+        <div id="description" class="card rounded-0 shadow mt-5">
+            <div class="card-header text-center rounded-0">
+                <h2>CREATION D'UN NOUVEAU CV</h2>
+              </div>
+            <div class="card-body ">
+                <form id="cvForm" method="post">
+
+                    {% csrf_token %}
+                    <div class="" style="padding: 5px 50px 20px 50px;">
+
+                        <div class="picture-container">
+                            <div class="picture">
+                                {% if cv.photo %}
+                                    <img src="{{ cv.photo.url }}" class="picture-src" id="wizardPicturePreview" title=""/>
+                                {% else %}
+                                    <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
+                                {% endif %}
+                                <input type="file" name="photo" id="wizard-picture">
+                            </div>
+                            <h6>Ajouter Photo</h6>
+                        </div>
+                        
+                        <div class="form-group mt-3">
+                            <label class="text-primary">Poste actuel ou souhaité</label>
+                            <input name="titre" id="titre" required type="text" class="form-control rounded-0" placeholder="Votre profession">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label class="text-primary">Profil</label>
+                            <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="5"></textarea>
+                        </div>
+    
+                        
+                        <div class="mt-4 form-group ">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h3>Formation</h3>
+                                    {% if not formations %}
+                                        <small class="text-danger" id="FormationNotif">  </small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-outline-primary rounded-0" id="formation"> nouvelle formation</button>
+                            </div>
+                            <select id="formationSelect" class="js-example-basic-multiple form-select" name="formation[]" multiple="multiple">
+                                {% for formation in formations%}
+                                    <option value="{{formation.id}}">{{formation.periode}} | {{formation.diplome}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mt-4 form-group">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h3>Competence</h3>
+                                    {% if not competences %}
+                                        <small class="text-danger" id="CompetenceNotif"> ( aucune competence ajoutée ) </small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-outline-primary rounded-0" id="competence"> ajouter competence</button>
+                            </div>
+                            <select id="competenceSelect" class="js-example-basic-multiple form-select" name="competence[]" multiple="multiple">
+                                {% for competence in competences %}
+                                    <option value="{{competence.id}}">{{competence.competence}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="mt-4 form-group">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h3>Experience professionnelle</h3>
+                                    {% if not experiences %}
+                                        <small class="text-danger" id="ExperienceNotif"> ( aucune experience professionnelle ajoutée ) </small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-outline-primary rounded-0" id="experience"> ajouter experience</button>
+                            </div>
+                            <select id="experienceSelect" class="js-example-basic-multiple form-select" name="experience[]" multiple="multiple">
+                                {% for experience in experiences%}
+                                    <option value="{{experience.id}}">{{experience.periode}} | {{experience.job_titre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mt-4 form-group">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h3>Langue</h3>
+                                    {% if not langues %}
+                                        <small class="text-danger" id="langueNotif"> ( aucune langue ajoutée ) </small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-outline-primary rounded-0" id="langue"> ajouter langue</button>
+                            </div>
+                            <select id="langueSelect" class="js-example-basic-multiple form-select" name="langue[]" multiple="multiple">
+                                {% for langue in langues %}
+                                    <option value="{{langue.id}}">{{langue.langue}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mt-4 form-group">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h3>Loisir</h3>
+                                    {% if not loisirs %}
+                                        <small class="text-danger" id="LoisirNotif"> ( aucun loisir ajouté ) </small>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-outline-primary rounded-0" id="loisir"> ajouter loisir</button>
+                            </div>
+                            <select id="loisirSelect" class="js-example-basic-multiple form-select" name="loisirs$[]" multiple="multiple">
+                                {% for loisir in loisirs %}
+                                    <option value="{{loisir.id}}">{{loisir.loisirs}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        
+                    </div>
+                    <div><hr></div>
+                    <div class="" style="display: flex; justify-content: center; margin-top: 5px;">
+
+                        <button style="width: 300px;" class="btn btn-success rounded-0" id="submitCv">CREER</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function showSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+
+        function hideSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+            });
+        $(document).ready(function () {
+            // Naviguer vers la page "about"
+            $('#competence').click(function () {
+                window.location.href = "{% url 'competence' %}";
+            });
+            $('#formation').click(function () {
+                window.location.href = "{% url 'formation' %}";
+            });
+            $('#experience').click(function () {
+                window.location.href = "{% url 'experience_pro' %}";
+            });
+            $('#langue').click(function () {
+                window.location.href = "{% url 'langue' %}";
+            });
+            $('#loisir').click(function () {
+                window.location.href = "{% url 'loisirs' %}";
+            });
+
+            $("#submitCv").click(function (e) {
+                e.preventDefault(); // Empêche le rechargement de la page
+                
+                // Récupérer les données du formulaire
+                let formData = $("#cvForm").serialize();
+                let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+                // Effectuer une requête AJAX
+                $.ajax({
+                    url: "{% url 'enregistrer_cv' %}", // Remplacez par l'URL de votre vue Django
+                    type: "POST",
+                    data: formData,
+                    headers: { "X-CSRFToken": csrfToken },
+                    success: function (response) {
+                        if (response.success) {
+                            // Ãfficher alert
+                            Swal.fire({
+                                position: "top",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            
+                            $("#cvForm")[0].reset(); // Réinitialise tous les champs du formulaire
+                            window.location.href = "{% url 'getCv' %}";
+                        } else {
+                            alert(response.message); // Message d'erreur
+                        }
+                    },
+                    error: function (error) {
+                        console.log("erreur--------------: "+JSON.stringify(error))
+                        alert("Une erreur est survenue lors de l'envoi du formulaire.");
+                    }
+                });
+            });
+
+            
+            
+
+            });
+
+    </script>
+
+
+
+{% endblock %}

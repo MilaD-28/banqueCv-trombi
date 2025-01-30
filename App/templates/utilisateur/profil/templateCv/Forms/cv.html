@@ -1,0 +1,554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.css" integrity="sha512-aT8kGTpksA05BegcQmkwCB142bJ9VHx8RAdt4FsCxivASGHCKrI3o1KX5oftKK8J8oZ5v450UtJPp66EJhEuHA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <title>{% block title %}CREATION DE CV{% endblock %}</title>
+
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+}
+body{
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f9f8f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif';
+}
+nav{
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+    ul{
+        width: 100%;
+        list-style: none;
+        display: flex;
+    }
+
+    li{
+        height: 50px;
+    }
+    li:first-child{
+        margin-right: auto;
+    }
+
+    a{
+        height: 100%;
+        padding: 0 30px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        color: black;
+    }
+    a:hover{
+        background-color: #f0f0f0;
+    }
+
+}
+
+.custom-popup {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Classe pour l'icône */
+.custom-icon {
+  font-size: 10px;
+  float: left;
+}
+
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    li{
+        width: 100%;
+    }
+    a{
+        width: 100%;
+    }
+}
+.lien{
+    color: #424346;
+}
+.menu-button{
+    display: none;
+}
+
+@media(max-width: 800px){
+    .hideOnMible{
+        display: none;
+    }
+    .menu-button{
+        display: block;
+    }
+}
+
+@media(max-width: 400px){
+    .sidebar{
+        width: 100%;
+    }
+}
+
+.template-form {
+    display: flex; /* Position côte à côte */
+    gap: 20px; /* Espacement entre les deux colonnes */
+}
+.template {
+    max-width: 65%; /* Limite la largeur maximale */
+    background-color: #F9F9F9;
+    padding: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.form {
+    max-width: 35%; /* Limite la largeur maximale */
+    padding: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.picture-container {
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+        }
+        
+        .picture {
+            width: 106px;
+            height: 106px;
+            background-color: #999999;
+            border: 4px solid #CCCCCC;
+            color: #FFFFFF;
+            border-radius: 50%;
+            margin: 5px auto;
+            overflow: hidden;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+        }
+        .picture:hover {
+            border-color: #2ca8ff;
+        }
+        .picture input[type="file"] {
+            cursor: pointer;
+            display: block;
+            height: 100%;
+            left: 0;
+            opacity: 0 !important;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+        .picture-src {
+            width: 100%;
+        }
+
+
+    </style>
+</head>
+<body>
+    <nav class="navBar">
+        <ul class="sidebar">
+            <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></a></li>
+            <li><a href="">Accueil</a></li>
+            <li><a href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
+            <li><a href="{% url 'connexion' %}">Se connecter</a></li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            <li class="">
+                
+                <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 3em; height: 60px;">
+                    {% if user.photo %}
+                        <img src="{{ user.photo.url }}" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                    {% else %}
+                        <img src="{% static 'assets/img/default-avatar.png' %}" alt="" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                    {% endif %}
+                        <span>{{ user.email }}</span>
+                </button>
+            </li>
+            {% endif %}
+
+            
+            {% if user.is_authenticated %}
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'profil' %}">
+                        <span class="text">Accueil</span>
+                    </a>                  
+                </li>
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'index' %}">
+                        <span class="text">Trombinoscope</span>
+                    </a>
+                </li>
+                
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'mesCv' %}">
+                        <span class="text">Mes CV</span>
+                    </a>
+                </li>
+                <li class="hideOnMible">
+                    <a class="lien" href="{% url 'format-cv' %}">
+                        <span class="text">Ajouter CV</span>
+                    </a>
+                </li>
+
+                <li class="hideOnMible">
+                    <a href="{% url 'deconnexion' %}" class="text-danger">
+                        <i class='bx bxs-log-out-circle' ></i>
+                        <span class="text">Deconnecter</span>
+                    </a> 
+                </li>
+            {% else %}
+                <li class="hideOnMible"><a href=""></a></li>
+                <li class="hideOnMible"><a class="lien" href="{% url 'index' %}">Accueil</a></li>
+                <li class="hideOnMible"><a class="lien" href="{% url 'ajouterPersonne' %}">S'inscrire</a></li>
+                <li class="hideOnMible"><a class="lien" href="{% url 'connexion' %}">Se connecter</a></li>
+            {% endif %}
+            <li class="menu-button" onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container-fluid">
+        <div id="content" style="margin: 0 12em;">
+
+
+            <div id="description" class="card rounded-0 shadow mt-5">
+                <div class="card-header text-center rounded-0">
+                    <h2>CREATION D'UN NOUVEAU CV</h2>
+                  </div>
+                <div class="card-body ">
+                    {% if edit %}
+                    <form action="{% url 'edit-profil' id=cv.id %}" method="post"></form>
+                    {% else %}
+                    <form id="cvForm" method="post">
+                    {% endif %}
+                    
+    
+                        {% csrf_token %}
+                        <div class="" style="padding: 5px 50px 20px 50px;">
+                            {% if edit %}
+    
+                            <div class="picture-container">
+                                <div class="picture">
+                                    {% if cv.photo %}
+                                        <img src="{{cv.photo.url}}" class="picture-src" id="wizardPicturePreview" title=""/>
+                                    {% else %}
+                                        <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
+                                    {% endif %}
+                                    
+                                    <input type="file" name="photo" id="wizard-picture">
+                                </div>
+                                <h6>Ajouter Photo</h6>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <label class="text-primary">Poste actuel ou souhaité</label>
+                                <input name="titre" id="titre" value="{{cv.poste}}" required type="text" class="form-control rounded-0" placeholder="Votre profession">
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="text-primary">Profil</label>
+                                <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="5">{{cv.description}}</textarea>
+                            </div>
+    
+                            {% else %}
+                            <div class="picture-container">
+                                <div class="picture">
+                                    <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
+                                    <input type="file" name="photo" id="wizard-picture">
+                                </div>
+                                <h6>Ajouter Photo</h6>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <label class="text-primary">Poste actuel ou souhaité</label>
+                                <input name="titre" id="titre" required type="text" class="form-control rounded-0" placeholder="Votre profession">
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="text-primary">Profil</label>
+                                <textarea class="form-control rounded-0" required name="description" id="description" cols="30" rows="5"></textarea>
+                            </div>
+        
+                            
+                            <div class="mt-4 form-group ">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h3>Formation</h3>
+                                        {% if not formations %}
+                                            <small class="text-danger" id="FormationNotif">  </small>
+                                        {% endif %}
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-0" id="formation" > nouvelle formation</button>
+                                </div>
+                                <select id="formationSelect" class="js-example-basic-multiple form-select" name="formation[]" multiple="multiple">
+                                    {% for formation in formations%}
+                                        <option value="{{formation.id}}">{{formation.periode}} | {{formation.diplome}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="mt-4 form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h3>Competence</h3>
+                                        {% if not competences %}
+                                            <small class="text-danger" id="CompetenceNotif"> ( aucune competence ajoutée ) </small>
+                                        {% endif %}
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-0" id="competence"> ajouter competence</button>
+                                </div>
+                                <select id="competenceSelect" class="js-example-basic-multiple form-select" name="competence[]" multiple="multiple">
+                                    {% for competence in competences %}
+                                        <option value="{{competence.id}}">{{competence.competence}}</option>
+                                    {% endfor %}
+    
+                                </select>
+                            </div>
+                            <div class="mt-4 form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h3>Experience professionnelle</h3>
+                                        {% if not experiences %}
+                                            <small class="text-danger" id="ExperienceNotif"> ( aucune experience professionnelle ajoutée ) </small>
+                                        {% endif %}
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-0" id="experience"> ajouter experience</button>
+                                </div>
+                                <select id="experienceSelect" class="js-example-basic-multiple form-select" name="experience[]" multiple="multiple">
+                                    {% for experience in experiences%}
+                                        <option value="{{experience.id}}">{{experience.periode}} | {{experience.job_titre}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mt-4 form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h3>Langue</h3>
+                                        {% if not langues %}
+                                            <small class="text-danger" id="langueNotif"> ( aucune langue ajoutée ) </small>
+                                        {% endif %}
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-0" id="langue"> ajouter langue</button>
+                                </div>
+                                <select id="langueSelect" class="js-example-basic-multiple form-select" name="langue[]" multiple="multiple">
+                                    {% for langue in langues %}
+                                        <option value="{{langue.id}}">{{langue.langue}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mt-4 form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h3>Loisir</h3>
+                                        {% if not loisirs %}
+                                            <small class="text-danger" id="LoisirNotif"> ( aucun loisir ajouté ) </small>
+                                        {% endif %}
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-0" id="loisir"> ajouter loisir</button>
+                                </div>
+                                <select id="loisirSelect" class="js-example-basic-multiple form-select" name="loisirs$[]" multiple="multiple">
+                                    {% for loisir in loisirs %}
+                                        <option value="{{loisir.id}}">{{loisir.loisirs}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+                            
+                        </div>
+                        <div><hr></div>
+                        <div class="" style="display: flex; justify-content: center; margin-top: 5px;">
+                            {% if edit %}
+                            <button style="width: 300px;" class="btn btn-success rounded-0" type="submit">Modifier</button>
+                            {% else %}
+                            <button style="width: 300px;" class="btn btn-success rounded-0" type="button" id="submitCv">CREER</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+    <footer style="height: 60px; display: flex; align-items: center; justify-content: center; margin-top: 10em;">
+        <div class="text-center"> 
+            <p class="mt-5 mb-3 text-muted">Trombinoscope | © 2024–2025</p>
+        </div>
+    </footer>
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'assets/js/gsdk-bootstrap-wizard.js' %}" type="text/javascript"></script>
+
+
+
+
+<script>
+    console.log("jQuery version:", window.jQuery ? $.fn.jquery : "jQuery n'est pas chargé !");
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        // Récupérer la valeur stockée
+        let data = localStorage.getItem("cvForm");
+
+        if (data) {
+            
+        } else {
+            console.log("Aucune donnée trouvée dans le localStorage.");
+        }
+    });
+
+
+    function showSidebar(){
+        const sidebar = document.querySelector('.sidebar')
+        sidebar.style.display = 'flex'
+    }
+
+    function hideSidebar(){
+        const sidebar = document.querySelector('.sidebar')
+        sidebar.style.display = 'none'
+    }
+    $(document).ready(function() {
+    // Initialize Select2 on the select element
+    $('select').select2();
+    });
+
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+
+
+    $(document).ready(function () {
+        // Naviguer vers la page "about"
+        $('#competence').click(function (e) {
+            e.preventDefault();
+            window.location.href = "{% url 'competence' %}";
+        });
+
+        $('#formation').click(function (e) {
+            e.preventDefault();
+            let formData = $("#cvForm").serialize();
+            localStorage.setItem("cvForm", formData)
+            window.location.href = "{% url 'formation' %}";
+        });
+
+        $('#experience').click(function (e) {
+            e.preventDefault();
+            window.location.href = "{% url 'experience_pro' %}";
+        });
+
+        $('#langue').click(function (e) {
+            e.preventDefault();
+            window.location.href = "{% url 'langue' %}";
+        });
+
+        $('#loisir').click(function (e) {
+            e.preventDefault();
+            window.location.href = "{% url 'loisirs' %}";
+        });
+
+        $("#submitCv").click(function (e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+            
+            // Récupérer les données du formulaire
+            let formData = $("#cvForm").serialize();
+            let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+            // Effectuer une requête AJAX
+            $.ajax({
+                url: "{% url 'enregistrer_cv' %}", // Remplacez par l'URL de votre vue Django
+                type: "POST",
+                data: formData,
+                headers: { "X-CSRFToken": csrfToken },
+                success: function (response) {
+                    if (response.success) {
+                        // Ãfficher alert
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            popup: 'custom-popup', // Classe personnalisée pour le popup
+                            icon: 'custom-icon', // Classe personnalisée pour l'icône
+                            title: 'custom-title', // 
+                        });
+                        
+                        $("#cvForm")[0].reset(); // Réinitialise tous les champs du formulaire
+                        window.location.href = "{% url 'getCv' %}";
+                    } else {
+                        alert(response.message); // Message d'erreur
+                    }
+                },
+                error: function (error) {
+                    console.log("erreur--------------: "+JSON.stringify(error))
+                    alert("Une erreur est survenue lors de l'envoi du formulaire.");
+                }
+            });
+        });
+        });
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+

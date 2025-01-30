@@ -3,66 +3,124 @@
 {% block title %} Description Profile {% endblock%}
 
 {% block content %}
-    <div class="text-center mt-5">
-        <h2><b style="font-size: 1.5em;"><span class="text-primary">Vos Loisirs</span> </b></h2>
-    </div>
-    <div class="container" style="display: flex; justify-content: center;">
-        <form action="{% url 'loisirs'  %}" method="post">
-            {% csrf_token %}
-            <div class="" style="border: 1px solid #45499d; padding: 20px; margin-top: 3em; width: 850px;">
-                <div id="container">
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="text-primary">Loisir</label>
-                            <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: end; "><button onclick="ajouter()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
-                <script>
-
-                    function ajouter() {
-                        // Créer un nouveau bloc de champs de formulaire
-                        const newFields = document.createElement('div');
-                        newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
-                        let container = document.getElementById('container')
-                        let nombreElements = container.children.length;
-                        
-                        // Ajout de la structure HTML pour les nouveaux champs
-                        newFields.innerHTML = `
+    <div class="d-flex justify-content-center mt-5" >
+        <div id="loisirs" class="card rounded-0 shadow w-75">
+            {% if edit %}
+            <div class="card-header rounded-0 text-center bg-primary text-light"><h3>MODIFIER LOISIR</h3></div>
+            {% else %}
+            <div class="card-header text-center rounded-0 bg-primary text-light"><h3>NOUVEAU(X) LOISIR(S)</h3></div>
+            {% endif %}
+            
+            <div class="card-body">
+                {% if edit %}
+                <form action="{% url 'edit-loisir' id=loisir.id %}" method="post">
+                {% else %}
+                <form id="loisirForm" method="post">
+                {% endif %}
+                    {% csrf_token %}
+                    <div class="" style="padding: 10px;">
+                        <div id="container">
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <label class="text-primary">Loisirs</label>
-                                    <input name="loisirs[]" type="text" class="form-control" placeholder="Ex: Jeux video">
+                                    <label class="text-primary">Loisir</label>
+                                    {% if edit %}
+                                    <input name="loisirs" value="{{loisir.loisirs}}" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
+                                    {% else %}
+                                    <input name="loisirs[]" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
+                                    {% endif %}
                                 </div>
                             </div>
-                            
-                            <button style="margin-bottom: 15px; font-size: 1em;" type="button" class="btn" onclick="supprimer(this)">x</button>
-                        `;
-
-                        // Ajouter le nouveau bloc de champs au conteneur
-                        document.getElementById('container').appendChild(newFields);
-                    }
-
-                    // Fonction pour supprimer un groupe de champs
-                    function supprimer(button) {
-                        // Trouver le parent div contenant les champs et le bouton
-                        const parentDiv = button.parentElement;
-
-                        // Supprimer ce div
-                        parentDiv.remove();
-                    }
-
-                </script>
+                        </div>
+                        {% if not edit %}
+                        <div style="display: flex; justify-content: end; "><button onclick="ajouterLoisir()" class="btn" type="button"><i class="fa-solid fa-plus"></i></button></div>
+                        {% endif %}
+                        <script>
+        
+                            function ajouterLoisir() {
+                                // Créer un nouveau bloc de champs de formulaire
+                                const newFields = document.createElement('div');
+                                newFields.classList.add('form-group-wrapper'); // Optionnel: pour la gestion de styles
+                                let container = document.getElementById('container')
+                                let nombreElements = container.children.length;
+                                
+                                // Ajout de la structure HTML pour les nouveaux champs
+                                newFields.innerHTML = `
+                                    <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label class="text-primary">Loisirs</label>
+                                            <input name="loisirs[]" type="text" class="form-control rounded-0" placeholder="Ex: Jeux video">
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn btn-outline-danger mt-2 rounded-0" style="margin-bottom: 15px; font-size: 1em;" type="button" class="btn" onclick="supprimer(this)">supprimer</button>
+                                `;
+        
+                                // Ajouter le nouveau bloc de champs au conteneur
+                                container.appendChild(newFields);
+                            }
+        
+                            // Fonction pour supprimer un groupe de champs
+                            function supprimer(button) {
+                                // Trouver le parent div contenant les champs et le bouton
+                                const parentDiv = button.parentElement;
+        
+                                // Supprimer ce div
+                                parentDiv.remove();
+                            }
+        
+                        </script>
+                    </div>
+        
+                    <div style="display: flex; justify-content: center; margin-top: 5px;">
+                        {% if  edit %}
+                        <button  style="width: 200px;" class="btn btn-success rounded-0" type="submit">Modifier</button>
+                        {% else %}
+                        <button id="submitLoisir" style="width: 200px;" class="btn btn-success rounded-0">Ajouter</button>
+                        {% endif %}
+                    </div>
+                </form>
             </div>
-            <div style="display: flex; justify-content: start; margin-top: 5px;">
-                <button style="width: 100px;"><i class="fa-solid fa-backward"></i></button>
-                
-            </div>
-            <div style="display: flex; justify-content: center; margin-top: 25px;">
-                <button style="width: 200px;" class="btn btn-success">Terminer</button>
-            </div>
-        </form>
+        </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $("#submitLoisir").click(function (e) {
+                e.preventDefault(); // Empêche le rechargement de la page
+                
+                // Récupérer les données du formulaire
+                let formData = $("#loisirForm").serialize();
+                let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+                // Effectuer une requête AJAX
+                $.ajax({
+                    url: "{% url 'loisirs' %}", // Remplacez par l'URL de votre vue Django
+                    type: "POST",
+                    data: formData,
+                    headers: { "X-CSRFToken": csrfToken },
+                    success: function (response) {
+                        if (response.success) {
+                            // Ãfficher alert
+                            $("#loisirForm")[0].reset()
+                            Swal.fire({
+                                position: "top",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            
+                            
+                        } else {
+                            alert(response.message); // Message d'erreur
+                        }
+                    },
+                    error: function () {
+                        alert("Une erreur est survenue lors de l'envoi du formulaire.");
+                    }
+                });
+            });
+        })
+    </script>
 
 {% endblock %}

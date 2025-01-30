@@ -5,18 +5,27 @@
 
 
 {% block content %}
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-danger mt-2" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="text-center" style="margin-top: 2em;">
         <h2>
-            <strong class="text-primary">NOUVEL</strong> Personne {% if error %} {{error}} {% endif %}
+            <strong class="text-primary">NOUVEL</strong> Personne 
         </h2>
     </div>
     <div class="container" style="display: flex; justify-content: center;">
-        
-        <form action="{% url 'ajouterPersonne' %}" method="post" enctype="multipart/form-data">
+        <div class="card rounded-0 shadow w-75">
+        <form action="{% url 'ajouterPersonne' %}"  method="post" enctype="multipart/form-data">
             {% csrf_token %}
-        <div style="border: 1px solid #716f6f; min-width: 350px; margin-top: 1em; padding:5px 20px;">
+        <div style="margin-top: 1em; padding:5px 20px;">
             <div class="row">
-                <div class="col-sm-4" style="height: 250px; display: flex; justify-content: center; align-items: center;">
+                <div class="col-sm-4 mt-2" style="height: 250px; display: flex; justify-content: center; align-items: center;">
                     <div class="picture-container">
                         <div class="picture">
                             <img src="{% static 'assets/img/default-avatar.png' %}" class="picture-src" id="wizardPicturePreview" title=""/>
@@ -25,78 +34,73 @@
                         <h6>Ajouter Photo</h6>
                     </div>
                 </div>
-                <div class="col-sm-8" style="">
+                <div class="col-sm-8 " >
                     
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                             <label>Nom</label>
-                            <input name="nom" type="text" class="form-control" required placeholder="Votre Nom...">
+                            <input name="nom" type="text" class="form-control rounded-0" required placeholder="Votre Nom...">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                             <label>Prenom(s)</label>
-                            <input name="prenoms" type="text" class="form-control" required placeholder="Votre Prenoms...">
+                            <input name="prenoms" type="text" class="form-control rounded-0" required placeholder="Votre Prenoms...">
                         </div>
-                        <div class="form-group">
-                            <label>Adresse</label>
-                            <input name="adresse" type="text" class="form-control" required placeholder="Ex: Côte d'ivoire / Abidjan / Abobo">
+                        <div class="form-group mt-2">
+                            <label>Localité</label>
+                            <input name="adresse" type="text" class="form-control rounded-0" required placeholder="Ex: Abidjan - Abobo">
                         </div>
                     
                 </div>
             </div>
-            <div class="row" >
+            <div class="row mt-2" >
                 <div class="col-sm-4" >
                     <div class="form-group">
                         <label>Telephone</label>
-                        <input name="telephone" type="text" class="form-control" required placeholder="Votre Nom...">
+                        <input name="telephone" type="text" class="form-control rounded-0" required placeholder="Votre Nom...">
                     </div>
                 </div>
                 <div class="col-sm-8" style="">
                     <div class="form-group">
                         <label>E-mail</label>
-                        <input name="email" type="email" class="form-control" required placeholder="exemple@gmail.com">
+                        <input name="email" type="email" class="form-control rounded-0" required placeholder="exemple@gmail.com">
                     </div>
                 </div>
             </div>
-            <div class="row" >
+            <div class="row mt-2" >
                 <div class="col-sm-6" >
                     <div class="form-group" style="">
                         <label>Mot de passe</label>
-                        <input name="mdp" id="mdp" required type="password" class="form-control">
+                        <input name="mdp" id="mdp" required type="password" class="form-control rounded-0">
                     </div>
                 </div>
                 <div class="col-sm-6" style="">
                     <div class="form-group">
                         <label>Confirmer Mot de passe</label>
-                        <input name="cmdp" id="cmdp" required type="password" class="form-control">
+                        <input name="cmdp" id="cmdp" required type="password" class="form-control rounded-0">
                     </div>
                 </div>
-                <div style="padding: 4px 35px;"><input onchange="show()" type="checkbox" class=""> Affiher mot de passe</div>
+                <div style="padding: 4px 35px;">
+                    <input onchange="togglePasswordVisibility()" type="checkbox"> Afficher mot de passe
+                </div>
                 <script>
                     // Afficher et masquer le mot de passe
-                    function show(){
-                        const mdp = document.querySelector('#mdp')
-                        const cmdp = document.querySelector('#cmdp')
+                    function togglePasswordVisibility() {
+                        const mdp = document.querySelector('#mdp');
+                        const cmdp = document.querySelector('#cmdp');
 
-                        const mdpType = mdp.getAttribute('type')
-                        const cmdpType = mdp.getAttribute('type')
+                        // Vérifiez le type actuel des champs
+                        const type = mdp.getAttribute('type') === 'password' ? 'text' : 'password';
 
-                        if (mdpType == "password" && cmdpType == "password"){
-                            mdp.removeAttribute('type')
-                            cmdp.removeAttribute('type')
-                            mdp.setAttribute('type', 'text')
-                            cmdp.setAttribute('type', 'text')
-                        }else{
-                            mdp.removeAttribute('type')
-                            cmdp.removeAttribute('type')
-                            mdp.setAttribute('type', 'passwprd')
-                            cmdp.setAttribute('type', 'passwprd')
-                        }
+                        // Changez le type des deux champs
+                        mdp.setAttribute('type', type);
+                        cmdp.setAttribute('type', type);
                     }
                 </script>
             </div>
         </div>
 
-        <div style="display: flex; justify-content: end; margin-top: 5px;"><button style="width: 200px;" class="btn btn-primary">Enregistrer</button></div>
-    </form>
+        <div style="display: flex; justify-content: center; margin-top: 5px;" class="mb-3"><button style="width: 200px;" class="btn btn-primary rounded-0">Enregistrer</button></div>
+        </form>
+        </div>
     </div>
 
 {% endblock %}

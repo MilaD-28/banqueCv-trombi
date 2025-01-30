@@ -5,6 +5,7 @@ class EmailBackend(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
             # Cherche un utilisateur avec l'email fourni
+            print(f"passe email----------------------: {request}")
             user = Personne.objects.get(email=email)
             print(f"passe email----------------------: {user.password}")
             print(f"password----------------------: {user.check_password(password)}")
